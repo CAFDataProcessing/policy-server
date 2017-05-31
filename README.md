@@ -9,4 +9,4 @@ A Docker container is included in this project that packages the Core Policy Web
 
 The Policy API is documented [here](./Docs/API.md).
 
-Configuration details for the container can be found [here](./Docs/Container Configuration.md).
+Configuration details for the container can be found [here](./Docs/Container%20Configuration.md).
