@@ -1,0 +1,92 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "API",
+    "description": "Retrieve classification objects.",
+    "type": "object",
+    "properties": {
+        "id": {
+            "description": "Id of request",
+            "oneOf": [
+                {
+                    "type": "number"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "number",
+                        "multipleOf": 1.0
+                    }
+                },
+                {
+                    "type": "null"
+                }
+            ]
+        },
+        "start": {
+            "description": "Start page",
+            "type": "number",
+            "multipleOf": 1.0
+        },
+        "max_page_results": {
+            "description": "Max page",
+            "type": "number",
+            "multipleOf": 1.0
+        }
+    },
+    "oneOf": [
+        {
+            "description": "Classification Retrieval",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": ["collection_sequence", "collection", "lexicon", "lexicon_expression", "field_label"]
+                }
+            }
+        },
+        {
+            "description": "Condition retrieval",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": ["condition"]
+                },
+                "additional": {
+                    "type": "object",
+                    "properties": {
+                        "include_children": {
+                            "description": "Include child conditions for boolean and not conditions, excluding the target of fragment conditions.",
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "description": "Collection retrieval",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": ["collection"]
+                },
+                "additional": {
+                    "type": "object",
+                    "properties": {
+                        "include_condition": {
+                            "description": "Include details of the collections condition.",
+                            "type": "boolean"
+                        },
+                        "include_children": {
+                            "description": "Include child conditions for boolean and not conditions, excluding the target of fragment conditions.",
+                            "type": "boolean"
+                        },
+                        "filter":{
+                            "description": "Filter for the requested collection",
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "required": ["type", "additional"]
+}

@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<!--
+
+    Copyright 2015-2017 Hewlett Packard Enterprise Development LP.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.github.cafdataprocessing.corepolicy.common.dto.conditions.Condition" table="tbl_condition">
+        <id column="id" name="id" access="field">
+            <generator class="identity"/>
+        </id>
+
+        <discriminator type="string" column="type"/>
+        <property name="name" column="item_name" access="field"/>
+        <property name="notes" column="notes" access="field" type="com.github.cafdataprocessing.corepolicy.hibernate.userTypes.TextUserType"/>
+        <property name="target" column="condition_target" access="field">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.github.cafdataprocessing.corepolicy.common.dto.conditions.ConditionTarget</param>
+                <param name="type">12</param>
+            </type>
+        </property>
+        <property name="includeDescendants" column="include_descendants" access="field"/>
+        <property name="isFragment" column="is_fragment" access="field"/>
+
+        <property name="order" column="condition_order" access="field"/>
+        <property name="parentConditionId" column="parent_condition_id" access="field"/>
+        <property name="projectId" column="project_id" access="field"/>
+        <subclass name="com.github.cafdataprocessing.corepolicy.common.dto.conditions.BooleanCondition" discriminator-value="BOOLEAN">
+            <property name="operator" access="field">
+                <type name="org.hibernate.type.EnumType">
+                    <param name="enumClass">com.github.cafdataprocessing.corepolicy.common.dto.conditions.BooleanOperator</param>
+                    <param name="type">12</param>
+                </type>
+            </property>
+        </subclass>
+        <subclass name="com.github.cafdataprocessing.corepolicy.common.dto.conditions.FragmentCondition" discriminator-value="FRAGMENT">
+            <property name="value" access="field" column="condition_fragment_id"/>
+        </subclass>
+        <subclass name="com.github.cafdataprocessing.corepolicy.common.dto.conditions.NotCondition" discriminator-value="NOT">
+        </subclass>
+        <subclass name="com.github.cafdataprocessing.corepolicy.common.dto.conditions.FieldCondition">
+            <property name="field" column="field_name" access="field"/>
+            <subclass name="com.github.cafdataprocessing.corepolicy.common.dto.conditions.DateCondition" discriminator-value="DATE">
+                <property name="value" column="string_value" access="field" type="com.github.cafdataprocessing.corepolicy.hibernate.userTypes.TextUserType"/>
+                <property name="operator" access="field">
+                    <type name="org.hibernate.type.EnumType">
+                        <param name="enumClass">com.github.cafdataprocessing.corepolicy.common.dto.conditions.DateOperator</param>
+                        <param name="type">12</param>
+                    </type>
+                </property>
+            </subclass>
+            <subclass name="com.github.cafdataprocessing.corepolicy.common.dto.conditions.ExistsCondition" discriminator-value="EXISTS" >
+            </subclass>
+            <subclass name="com.github.cafdataprocessing.corepolicy.common.dto.conditions.LexiconCondition" discriminator-value="LEXICON">
+                <property name="value" column="lexicon_id" access="field"/>
+                <!--todo get this to save with language-->
+                <property name="language" column="language" access="field"/>
+            </subclass>
+            <subclass name="com.github.cafdataprocessing.corepolicy.common.dto.conditions.NumberCondition" discriminator-value="NUMBER">
+                <property name="value" column="number_value" access="field"/>
+                <property name="operator" access="field">
+                    <type name="org.hibernate.type.EnumType">
+                        <param name="enumClass">com.github.cafdataprocessing.corepolicy.common.dto.conditions.NumberOperatorType</param>
+                        <param name="type">12</param>
+                    </type>
+                </property>
+            </subclass>
+            <subclass name="com.github.cafdataprocessing.corepolicy.common.dto.conditions.RegexCondition" discriminator-value="REGEX">
+                <property name="value" column="string_value" access="field" type="com.github.cafdataprocessing.corepolicy.hibernate.userTypes.TextUserType"/>
+            </subclass>
+            <subclass name="com.github.cafdataprocessing.corepolicy.common.dto.conditions.StringCondition" discriminator-value="STRING" >
+                <property name="value" column="string_value" access="field" type="com.github.cafdataprocessing.corepolicy.hibernate.userTypes.TextUserType"/>
+                <property name="operator" access="field">
+                    <type name="org.hibernate.type.EnumType">
+                        <param name="enumClass">com.github.cafdataprocessing.corepolicy.common.dto.conditions.StringOperatorType</param>
+                        <param name="type">12</param>
+                    </type>
+                </property>
+            </subclass>
+            <subclass name="com.github.cafdataprocessing.corepolicy.common.dto.conditions.TextCondition" discriminator-value="TEXT" >
+                <property name="value" column="string_value" access="field" type="com.github.cafdataprocessing.corepolicy.hibernate.userTypes.TextUserType"/>
+                <property name="language" column="language" access="field"/>
+            </subclass>
+        </subclass>
+    </class>
+
+</hibernate-mapping>

@@ -1,0 +1,26 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "API",
+    "description": "Delete policy objects.",
+    "type": "object",
+    "properties":{
+        "type": {
+           "enum": ["policy", "policy_type"]
+        },
+        "id": {
+            "oneOf": [
+                {
+                    "type": "number"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "number",
+                        "multipleOf": 1.0
+
+                    }
+                }
+            ]
+        }
+    }
+}

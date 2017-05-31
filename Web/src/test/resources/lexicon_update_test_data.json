@@ -1,0 +1,114 @@
+{
+    "apiTests": [
+        {
+            "description": "Lexicon no name",
+            "valid": false,
+            "json": {
+                "type": "lexicon"
+            }
+        },
+        {
+            "description": "Lexicon no id",
+            "valid": false,
+            "json": {
+                "type": "lexicon",
+                "name": "my lexicon"
+            }
+        },
+        {
+            "description": "Lexicon with name",
+            "valid": true,
+            "json": {
+                "id": 1,
+                "type": "lexicon",
+                "name": "my lexicon"
+            }
+        },
+        {
+            "description": "Lexicon with expression",
+            "valid": true,
+            "json": {
+                "id": 1,
+                "type": "lexicon",
+                "name": "my lexicon",
+                "additional": {
+                    "lexicon_expressions": [{
+                        "type": "regex",
+                        "expression": "some expression"
+                    }]
+                }
+            }
+        },
+        {
+            "description": "Lexicon with empty array",
+            "valid": true,
+            "json": {
+                "id": 1,
+                "type": "lexicon",
+                "name": "my lexicon",
+                "additional": {
+                    "lexicon_expressions": []
+                }
+            }
+        },
+        {
+            "description": "Lexicon with no array",
+            "valid": true,
+            "json": {
+                "id": 1,
+                "type": "lexicon",
+                "name": "my lexicon",
+                "additional": {
+                }
+            }
+        },
+        {
+            "description": "Lexicon with invalid empty expression",
+            "valid": false,
+            "json": {
+                "id": 1,
+                "type": "lexicon",
+                "name": "my lexicon",
+                "additional": {
+                    "lexicon_expressions": [{
+                    }]
+                }
+            }
+        },
+        {
+            "description": "Lexicon expression",
+            "valid": true,
+            "json": {
+                "id": 1,
+                "type": "lexicon_expression",
+                "additional": {
+                    "lexicon_id": 1,
+                    "type": "text",
+                    "expression": "some expression"
+                }
+            }
+        },
+        {
+            "description": "Lexicon expression no lexicon id",
+            "valid": false,
+            "json": {
+                "id": 1,
+                "type": "lexicon_expression",
+                "additional": {
+                    "expression": "some expression"
+                }
+            }
+        },
+        {
+            "description": "Lexicon expression no expression",
+            "valid": false,
+            "json": {
+                "id": 1,
+                "type": "lexicon_expression",
+                "additional": {
+                    "lexicon_id": 1
+                }
+            }
+        }
+    ]
+}

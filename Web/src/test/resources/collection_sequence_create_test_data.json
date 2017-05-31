@@ -1,0 +1,80 @@
+{
+    "apiTests": [
+        {
+            "description": "No type specified",
+            "valid": false,
+            "json": {
+            }
+        },
+        {
+            "description": "Collection sequence with no name",
+            "valid": false,
+            "json": {
+                "type": "collection_sequence"
+            }
+        },
+        {
+            "description": "Collection sequence with name only",
+            "valid": true,
+            "json": {
+                "type": "collection_sequence",
+                "name": "My Collection sequence"
+            }
+        },
+        {
+            "description": "Collection sequence with entries",
+            "valid": true,
+            "json": {
+                "type": "collection_sequence",
+                "name": "My Collection sequence",
+                "description": "",
+                "collection_sequence_entries": [
+                    {
+                        "stop_on_match": true,
+                        "collections_ids": [1, 2, 3]
+                    },
+                    {
+                        "stop_on_match": false,
+                        "collections_ids": [4, 5]
+                    },
+                    {
+                        "stop_on_match": false,
+                        "collections_ids": [6]
+                    }
+                ]
+            }
+        },
+        {
+            "description": "Collection sequence with empty entry",
+            "valid": true,
+            "json": {
+                "type": "collection_sequence",
+                "name": "My Collection sequence",
+                "description": "",
+                "collection_sequence_entries": [
+                    {
+                    }
+                ]
+            }
+        },
+        {
+            "description": "Collection sequence with invalid entry",
+            "valid": false,
+            "json": {
+                "type": "collection_sequence",
+                "name": "My Collection sequence",
+                "description": "",
+                "additional": {
+                    "collection_sequence_entries": [
+                        {
+                            "stop_on_match": 1234,
+                            "collections_ids": [1, 2, 3]
+                        }
+                    ]
+                }
+            }
+        }
+
+    ]
+}
+

@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+
+    Copyright 2015-2017 Hewlett Packard Enterprise Development LP.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hbm2ddl.auto">validate</property>
+        <property name="hibernate.connection.provider_class">org.hibernate.c3p0.internal.C3P0ConnectionProvider</property>
+        <property name="hibernate.c3p0.max_size">20</property>
+        <!--<property name="hibernate.c3p0.max_statements">0</property>-->
+        <!--<property name="hibernate.c3p0.min_size">10</property>-->
+        <!-- Try X times to aquire a connection with 5 secs delay between each -->
+        <property name="hibernate.c3p0.acquireRetryAttempts">5</property>
+        <property name="hibernate.c3p0.acquireRetryDelay">5000</property>
+        <!-- note that break after failure
+          will declare the connection pool invalid and fail immediately on all future connections.
+           very useful to signal all future requests failed in our docker container
+           but would also require a health check to find out when this happens so it will get restarted at some point.
+        <property name="hibernate.c3p0.breakAfterAcquireFailure">true</property> -->
+
+        <!-- Ensure checkout timeout is large than max acquireRetry attempts above, as it will only wait Xms
+             of time when its aquiring a branch new connection ( not already in pool. )
+             I have set this to 30secs, there should be no way we should ever have all connections executing transactions for
+             more than this length of time. Otherwise something more serious is wrong -->
+        <property name="hibernate.c3p0.checkoutTimeout">30000</property>
+
+        <!-- close pooled Connections that go unused for more than half an hour -->
+        <property name="hibernate.c3p0.maxIdleTime">1800</property>
+
+        <!-- Any connections over the min number of connections which are idle for x seconds
+            will be culled from the pool. This will bring connections numbers back down after a heavy spike. -->
+        <property name="hibernate.c3p0.maxIdleTimeExcessConnections">600</property>
+
+        <!-- Enable some form of prep cache statements in hibernate per connection -->
+        <property name="hibernate.c3p0.maxStatementsPerConnection">150</property>
+
+        <property name="org.jboss.logging.provider">slf4j</property>
+        <property name="javax.persistence.validation.mode">none</property>
+
+        <mapping resource="condition.hbm.xml"/>
+        <mapping resource="fieldLabel.hbm.xml"/>
+        <mapping resource="lexiconExpression.hbm.xml"/>
+        <mapping resource="lexicon.hbm.xml"/>
+        <mapping resource="collectionSequence.hbm.xml"/>
+        <mapping resource="collectionSequenceEntry.hbm.xml"/>
+        <mapping resource="collection.hbm.xml"/>
+        <mapping resource="policyType.hbm.xml"/>
+        <mapping resource="policy.hbm.xml"/>
+        <mapping resource="sequenceWorkflow.hbm.xml"/>
+        <mapping resource="sequenceWorkflowEntry.hbm.xml"/>
+        <mapping resource="sequenceWorkflowEntryDto.hbm.xml"/>
+        <mapping resource="releaseHistory.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>

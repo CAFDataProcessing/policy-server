@@ -1,0 +1,25 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Collate Document.",
+    "description": "TODO",
+    "type": "object",
+    "properties": {
+        "document":{
+            "description": "TODO",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties":{
+                    "title": {
+                        "description": "TODO",
+                        "type": "string"
+                    },
+                    "reference": {
+                        "description": "TODO",
+                        "type": "string"
+                    }
+                }
+            }
+        }
+   }
+}

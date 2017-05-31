@@ -1,0 +1,11 @@
+{
+	"document": [
+		{
+			"title": "Trash - Size",
+			"reference": "TrashSize",
+			"content": "Some Content",
+			"extension": "txt",
+			"size": "0"
+		}
+	]
+}

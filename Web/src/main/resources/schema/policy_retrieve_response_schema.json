@@ -1,0 +1,113 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "API",
+    "description": "Policy retrieve response.",
+    "type": "object",
+    "properties": {
+        "results": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties":{
+                    "id": {
+                        "description": "Id of object",
+                        "type": "number",
+                        "multipleOf": 1.0
+                    },
+                    "name": {
+                        "description": "Name of object",
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "description": {
+                        "description": "Description of object",
+                        "type": ["string","null"]
+                    },
+                    "type": {
+                        "description": "Must be a policy object",
+                        "enum":["policy", "policy_type"]
+                    },
+                    "additional": {
+                        "description": "JSON formatted additional information depending on the object type.",
+                        "type": "object"
+                    }
+                },
+                "required": ["id", "type"],
+                "oneOf": [
+                    {
+                        "$ref": "#/definitions/policy"
+                    },
+                    {
+                        "$ref": "#/definitions/policy_type"
+                    }
+                ]
+            }
+        },
+        "totalhits": {
+            "description": "The total number of policy objects of this type.",
+            "type": "number",
+            "multipleOf": 1.0
+        }
+    },
+    "required": ["results","totalhits"],
+
+    "definitions": {
+        "policy": {
+            "description": "The policy object.",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": ["policy"]
+                },
+                "additional": {                    
+                    "type": "object",
+                    "properties": {
+                        "policy_type_id": {
+                            "description": "The id of the policy_type.",
+                            "type": "number",
+                            "multipleOf": 1.0
+                        },
+                        "details": {
+                            "description": "The details of the policy.",
+                            "type": "object"
+                        },
+                        "priority": {
+                            "description": "priority of policy",
+                            "type": "number"
+                        }
+                    },
+                    "required": ["policy_type_id", "details", "priority"]
+                }
+            },
+            "required": ["name", "additional"]
+        },
+        "policy_type": {
+            "description": "The policy_type object",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": ["policy_type"]
+                },
+                "additional": {
+                    "type": "object",
+                    "properties": {
+                        "definition": {
+                            "description": "The additional parameters for the policy_type.",
+                            "type": "object"
+                        },
+                        "short_name": {
+                            "description": "The short name for the policy type.",
+                            "type": "string"
+                        },
+                        "conflict_resolution_mode": {
+                            "description": "Conflict resolution enum, Priority or Custom",
+                            "type": ["string","null"]
+                        }
+                    },
+                    "required": ["short_name", "definition"]
+                }
+            },
+            "required": ["name", "additional"]
+        }
+    }
+}

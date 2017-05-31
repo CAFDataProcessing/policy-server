@@ -1,0 +1,12 @@
+{
+	"document": [
+		{
+			"title": "Trash - Flag",
+			"reference": "TrashFlag",
+			"content": "Some Content",
+			"extension": "txt",
+			"TrashFlag1": "0",
+			"TrashFlag2": "0"
+		}
+	]
+}

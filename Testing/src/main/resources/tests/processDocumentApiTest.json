@@ -1,0 +1,23 @@
+{
+    "policy_environment":{
+        "collection_sequences":[
+            {"id":1, "name": "my collection sequence"}
+        ]
+    },
+    "tests":[
+        {
+            "document": {
+                "metadata":{"reference":["A reference"],"collection_sequence":["1"]},
+                "documents":[
+                    {"metadata":{"reference":["child"]},"documents":[]}
+                ]
+            },
+            "is_continue_processing": true,
+            "field_actions":[
+                {"name":"field","action":"ADD_FIELD_VALUE","value":"123"},
+                {"name":"field","action":"ADD_FIELD_VALUE","value":"123"}
+            ]
+        }
+    ]
+
+}

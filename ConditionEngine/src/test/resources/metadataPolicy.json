@@ -1,0 +1,33 @@
+{
+    "title": "Metadata Policy Type",
+    "description": "A metadata policy.",
+    "type": "object",
+    "properties": {
+        "fieldActions": {
+            "type": "array",
+            "items": {
+                "title": "Field Action",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "The name of the field to perform the action on.",
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "action": {
+                        "description": "The type of action to perform on the field.",
+                        "type": "string",
+                        "enum": [
+                            "ADD_FIELD_VALUE"
+                        ]
+                    },
+                    "value": {
+                        "description": "The value to use for the field action.",
+                        "type": "string"
+                    }
+                },
+                "required": ["name", "action"]
+            }
+        }
+    }
+}

@@ -1,0 +1,93 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "API",
+    "description": "Create policy objects.",
+    "type": "object",
+    "properties":{
+        "id": {
+            "description": "Id of object",
+            "type": ["number","null"]
+        },
+        "name": {
+            "description": "name of object",
+            "type": "string",
+            "minLength": 1
+        },
+        "description": {
+            "description": "description of object",
+            "type": ["string","null"]
+        },
+        "type": {
+            "enum": ["policy", "policy_type"]
+        }
+    },
+    "required": ["type", "name"],
+    "oneOf": [
+        {
+            "$ref": "#/definitions/policy"
+        },
+        {
+            "$ref": "#/definitions/policy_type"
+        }
+    ],
+    "definitions": {
+        "policy": {
+            "description": "Policy object",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": ["policy"]
+                },
+                "additional": {
+                    "type": "object",
+                    "properties": {
+                        "policy_type_id": {
+                            "description": "Id of policy type",
+                            "type": "number",
+                            "multipleOf": 1.0
+                        },
+                        "details": {
+                            "description": "details of policy serialized to JSON Node",
+                            "type": "object"
+                        },
+                        "priority": {
+                            "description": "priority of policy",
+                            "type": "number"
+                        }
+                    },
+                    "required": ["policy_type_id", "details", "priority"]
+                }
+            },
+            "required": ["additional"]
+        },
+        "policy_type": {
+            "description": "Policy type object",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": ["policy_type"]
+                },
+                "additional": {
+                    "description": "Policy Type's properties serialized into additional object",
+                    "type": "object",
+                    "properties": {
+                        "short_name": {
+                            "description": "The short name for the policy type.",
+                            "type": "string"
+                        },
+                        "definition": {
+                            "description": "The definition for the policy_type serialized into a JSON Node.",
+                            "type": "object"
+                        },
+                        "conflict_resolution_mode": {
+                            "description": "Conflict resolution enum, Priority or Custom",
+                            "type": "string"
+                        }
+                    },
+                    "required": ["short_name","definition"]
+                }
+            },
+            "required": ["name","additional"]
+        }
+    }
+}

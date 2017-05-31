@@ -1,0 +1,153 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "API",
+    "description": "Collate Document Response.",
+    "type": "object",
+    "properties": {
+        "result": {
+            "description": "Array of results",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "reference":{
+                        "description": "Reference to the evaluated document",
+                        "type": ["string","null"]
+                    },
+                    "unevaluated_conditions": {
+                        "description": "Array of unevaluated conditions",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "description": "id of condition",
+                                        "type": "number",
+                                        "multipleOf": 1.0
+                                    },
+                                    "name": {
+                                        "description": "Name of condition",
+                                        "type": "string"
+                                    }
+                                },
+                                "required": ["id", "name"]
+                            }
+                        }
+                    },
+                    "matched_collections": {
+                        "description": "collections that match the request",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "description": "Id of collection",
+                                    "type": "number",
+                                    "multipleOf": 1.0
+                                },
+                                "name": {
+                                    "description": "Name of collection",
+                                    "type": "string"
+                                },
+                                "matched_conditions": {
+                                    "description": "A list of conditions in the parent collection that matched the document.",
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "reference": {
+                                                "description": "Reference of condition",
+                                                "type": "string"
+                                            },
+                                            "terms": {
+                                                "description": "Terms of condition",
+                                                "type": "array",
+                                                "items": {
+                                                    "type": ["string","null"]
+                                                }
+                                            },
+                                            "matched_lexicon_expressions": {
+                                                "description": "Lexicon expressions that match the collection",
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "lexicon_expression_id": {
+                                                            "description": "Id of lexicon expression",
+                                                            "type": ["number","null"],
+                                                            "multipleOf": 1.0
+                                                        },
+                                                        "terms": {
+                                                            "description": "Terms of lexicon expression",
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": ["string","null"]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "field_name": {
+                                                "description": "field name of condition",
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "required": ["id"]
+                                },
+                                "policies":{
+                                    "description": "policies of matched collection",
+                                    "type": "array",
+                                    "items":{
+                                        "type":"object",
+                                        "properties":{
+                                            "id":{
+                                                "description": "Id of policy",
+                                                "type": "number",
+                                                "multipleOf": 1.0
+                                            },
+                                            "name":{
+                                                "description": "Name of policy",
+                                                "type": ["string","null"]
+                                            }
+                                        },
+                                        "required": ["id"]
+                                    }
+                                }
+                            },
+                            "required": ["id", "name"]
+                        }
+                    },
+                    "collection_id_assigned_by_default": {
+                        "description": "Id assigned by default",
+                        "type": ["number","null"],
+                        "multipleOf": 1.0
+                    },
+                    "incomplete_collections": {
+                        "description": "Array of incomplete collections",
+                        "type": ["array","null"],
+                        "items": {
+                            "type": "number",
+                            "multipleOf": 1.0
+                        }
+                    },
+                    "resolved_policies":{
+                        "description": "Array of resolved policies",
+                        "type": "array",
+                        "items":{
+                            "type": "number",
+                            "multipleOf": 1.0
+                        }
+                    },
+                    "signature":{
+                        "description": "encoded metadata of result",
+                        "type": ["string","null"]
+                    }
+                },
+                "required": ["matched_collections","incomplete_collections"]
+            }
+        }
+    }
+}

@@ -1,0 +1,54 @@
+{
+    "apiTests": [
+        {
+            "description": "Policy no name",
+            "valid": false,
+            "json": {
+                "type": "policy"
+            }
+        },
+        {
+            "description": "Policy with name",
+            "valid": false,
+            "json": {
+                "type": "policy",
+                "name": "my policy"
+            }
+        },
+        {
+            "description": "Policy with name and definition",
+            "valid": false,
+            "json": {
+                "type": "policy",
+                "name": "my policy",
+                "additional": {
+                    "details": "some details"
+                }
+            }
+        },
+        {
+            "description": "Policy with name and definition and invalid type",
+            "valid": false,
+            "json": {
+                "type": "policy",
+                "name": "my policy",
+                "additional": {
+                    "policy_type_id": 1.5,
+                    "details": "some details"
+                }
+            }
+        },
+        {
+            "description": "Policy with name and definition and type",
+            "valid": true,
+            "json": {
+                "type": "policy",
+                "name": "my policy",
+                "additional": {
+                    "policy_type_id": 1,
+                    "details": "some details"
+                }
+            }
+        }
+    ]
+}

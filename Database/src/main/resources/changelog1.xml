@@ -1,0 +1,784 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+
+    Copyright 2015-2017 Hewlett Packard Enterprise Development LP.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+   <changeSet author="CAF" id="1495670380000-1">
+        <createTable tableName="tbl_collection">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="primary_collection"/>
+            </column>
+            <column name="item_name" type="VARCHAR(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="CLOB"/>
+            <column name="condition_id" type="BIGINT"/>
+            <column name="project_id" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <modifySql dbms="mysql">
+            <append value=" ENGINE=INNODB CHARSET=utf8mb4 COLLATE UTF8MB4_UNICODE_CI"/>
+        </modifySql>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-2">
+        <createIndex indexName="indx1_tbl_collections" tableName="tbl_collection">
+            <column name="project_id"/>
+        </createIndex>
+        <createIndex indexName="indx2_tbl_collections" tableName="tbl_collection">
+            <column name="condition_id"/>
+            <column name="project_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-3">
+        <createTable tableName="tbl_collection_sequence">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="primary_collection_sequence"/>
+            </column>
+            <column name="item_name" type="VARCHAR(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="CLOB"/>
+            <column name="default_collection_id" type="BIGINT"/>
+            <column name="excluded_condition_id" type="BIGINT"/>
+            <column defaultValueBoolean="false" name="full_condition_evaluation" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated" type="TIMESTAMP"/>
+            <column defaultValueNumeric="0" name="collection_count" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="project_id" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="evaluation_enabled" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <modifySql dbms="mysql">
+            <append value=" ENGINE=INNODB CHARSET=utf8mb4 COLLATE UTF8MB4_UNICODE_CI"/>
+        </modifySql>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-4">
+        <createTable tableName="tbl_collection_sequence_entry">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="primary_collection_sequence_entry"/>
+            </column>
+            <column name="collection_sequence_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="stop_on_match" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="entry_order" type="SMALLINT(5)"/>
+            <column name="project_id" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <modifySql dbms="mysql">
+            <append value=" ENGINE=INNODB CHARSET=utf8mb4 COLLATE UTF8MB4_UNICODE_CI"/>
+        </modifySql>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-5">
+        <createIndex indexName="indx1_tbl_collection_sequence_entry" tableName="tbl_collection_sequence_entry">
+            <column name="project_id"/>
+        </createIndex>
+        <createIndex indexName="indx2_tbl_collection_sequence_entry" tableName="tbl_collection_sequence_entry">
+            <column name="collection_sequence_id"/>
+            <column name="project_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-6">
+        <createTable tableName="tbl_collection_sequence_entry_collection">
+            <column name="collection_sequence_entry_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="collection_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <modifySql dbms="mysql">
+            <append value=" ENGINE=INNODB CHARSET=utf8mb4 COLLATE UTF8MB4_UNICODE_CI"/>
+        </modifySql>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-7">
+        <createTable tableName="tbl_collection_policy">
+            <column name="collection_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="policy_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="project_id" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <modifySql dbms="mysql">
+            <append value=" ENGINE=INNODB CHARSET=utf8mb4 COLLATE UTF8MB4_UNICODE_CI"/>
+        </modifySql>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-8">
+        <createIndex indexName="indx1_tbl_collection_policy" tableName="tbl_collection_policy">
+            <column name="collection_id"/>
+            <column name="project_id"/>
+        </createIndex>
+        <createIndex indexName="indx2_tbl_collection_policy" tableName="tbl_collection_policy">
+            <column name="policy_id"/>
+            <column name="project_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-9">
+        <createTable tableName="tbl_condition">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="primary_condition"/>
+            </column>
+            <column name="item_name" type="VARCHAR(256)"/>
+            <column name="type" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parent_condition_id" type="BIGINT"/>
+            <column name="is_fragment" type="BOOLEAN"/>
+            <column name="condition_order" type="INT"/>
+            <column name="field_name" type="VARCHAR(128)"/>
+            <column name="operator" type="VARCHAR(32)"/>
+            <column name="date_value" type="TIMESTAMP"/>
+            <column name="number_value" type="BIGINT"/>
+            <column name="string_value" type="CLOB"/>
+            <column name="condition_fragment_id" type="BIGINT"/>
+            <column name="lexicon_id" type="BIGINT"/>
+            <column name="condition_target" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="include_descendants" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="language" type="VARCHAR(3)"/>
+            <column name="notes" type="CLOB"/>
+            <column name="project_id" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <modifySql dbms="mysql">
+            <append value=" ENGINE=INNODB CHARSET=utf8mb4 COLLATE UTF8MB4_UNICODE_CI"/>
+        </modifySql>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-10">
+        <createIndex indexName="indx1_tbl_condition" tableName="tbl_condition">
+            <column name="project_id"/>
+        </createIndex>
+        <createIndex indexName="indx2_tbl_condition" tableName="tbl_condition">
+            <column name="parent_condition_id"/>
+            <column name="project_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-11">
+        <createTable tableName="tbl_field_label">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="primary_field_label"/>
+            </column>
+            <column name="label_name" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="field_type" type="VARCHAR(32)"/>
+            <column name="fields" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="project_id" type="VARCHAR(40)"/>
+        </createTable>
+        <modifySql dbms="mysql">
+            <append value=" ENGINE=INNODB CHARSET=utf8mb4 COLLATE UTF8MB4_UNICODE_CI"/>
+        </modifySql>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-12">
+        <createIndex indexName="indx1_tbl_field_label" tableName="tbl_field_label" unique="true">
+            <column name="label_name"/>
+            <column name="project_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-13">
+        <createTable tableName="tbl_lexicon">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="primary_lexicon"/>
+            </column>
+            <column name="item_name" type="VARCHAR(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="CLOB"/>
+            <column name="project_id" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <modifySql dbms="mysql">
+            <append value=" ENGINE=INNODB CHARSET=utf8mb4 COLLATE UTF8MB4_UNICODE_CI"/>
+        </modifySql>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-14">
+        <createIndex indexName="indx1_tbl_lexicon" tableName="tbl_lexicon">
+            <column name="project_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-15">
+        <createTable tableName="tbl_lexicon_expression">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="primary_lexicon_expression"/>
+            </column>
+            <column name="expression" type="VARCHAR(1500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lexicon_type" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lexicon_id" type="BIGINT">
+            </column>
+            <column name="project_id" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <modifySql dbms="mysql">
+            <append value=" ENGINE=INNODB CHARSET=utf8mb4 COLLATE UTF8MB4_UNICODE_CI"/>
+        </modifySql>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-16">
+        <createIndex indexName="indx1_tbl_lexicon_expressions" tableName="tbl_lexicon_expression">
+            <column name="project_id"/>
+        </createIndex>
+        <createIndex indexName="indx2_tbl_lexicon_expressions" tableName="tbl_lexicon_expression">
+            <column name="lexicon_id"/>
+            <column name="project_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-17">
+        <createTable tableName="tbl_policy">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="primary_policy"/>
+            </column>
+            <column name="item_name" type="VARCHAR(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="CLOB"/>
+            <column name="details" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="priority" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="policy_type_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="deleted" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="project_id" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <modifySql dbms="mysql">
+            <append value=" ENGINE=INNODB CHARSET=utf8mb4 COLLATE UTF8MB4_UNICODE_CI"/>
+        </modifySql>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-18">
+        <createIndex indexName="indx1_tbl_policy" tableName="tbl_policy">
+            <column name="project_id"/>
+        </createIndex>
+        <createIndex indexName="indx2_tbl_policy" tableName="tbl_policy">
+            <column name="policy_type_id"/>
+            <column name="project_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-19">
+        <createTable tableName="tbl_policy_type">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="primary_policy_type"/>
+            </column>
+            <column name="item_name" type="VARCHAR(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="CLOB"/>
+            <column name="definition" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="internal_name" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="conflict_resolution_mode" type="VARCHAR(64)"/>
+            <column name="project_id" type="VARCHAR(40)"/>
+        </createTable>
+        <modifySql dbms="mysql">
+            <append value=" ENGINE=INNODB CHARSET=utf8mb4 COLLATE UTF8MB4_UNICODE_CI"/>
+        </modifySql>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-20">
+        <createIndex indexName="indx1_tbl_policy_type" tableName="tbl_policy_type">
+            <column name="project_id"/>
+        </createIndex>
+        <createIndex indexName="indx2_tbl_policy_type" tableName="tbl_policy_type" unique="true">
+            <column name="internal_name"/>
+            <column name="project_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-21">
+        <createTable tableName="tbl_release_history">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="primary_release_history"/>
+            </column>
+            <column name="release" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP()" name="date_stamp" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="major_version" type="SMALLINT(5)" defaultValue="0"/>
+            <column name="minor_version" type="SMALLINT(5)" defaultValue="0"/>
+            <column name="revision" type="SMALLINT(5)" defaultValue="0"/>
+        </createTable>
+        <modifySql dbms="mysql">
+            <append value=" ENGINE=INNODB CHARSET=utf8mb4 COLLATE UTF8MB4_UNICODE_CI"/>
+        </modifySql>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-22">
+        <addPrimaryKey columnNames="collection_sequence_entry_id, collection_id" constraintName="primary_collection_sequence_entry_collection" tableName="tbl_collection_sequence_entry_collection"/>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-23">
+        <addPrimaryKey columnNames="collection_id, policy_id" constraintName="primary_collection_policy" tableName="tbl_collection_policy"/>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-24">
+        <addUniqueConstraint columnNames="project_id, internal_name" constraintName="unique_project_id_internal_name" deferrable="false" disabled="false" initiallyDeferred="false" tableName="tbl_policy_type"/>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-25">
+        <addForeignKeyConstraint baseColumnNames="collection_sequence_id" baseTableName="tbl_collection_sequence_entry" constraintName="fk_tbl_collection_sequence_collection_sequence_id" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="tbl_collection_sequence"/>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-26">
+        <addForeignKeyConstraint baseColumnNames="default_collection_id" baseTableName="tbl_collection_sequence" constraintName="fk_collection_sequence_default_collection_id" deferrable="false" initiallyDeferred="false" onDelete="SET NULL" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="tbl_collection"/>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-27">
+        <addForeignKeyConstraint baseColumnNames="parent_condition_id" baseTableName="tbl_condition" constraintName="fk_condition_parent_condition_id" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="tbl_condition"/>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-28">
+        <addForeignKeyConstraint baseColumnNames="condition_fragment_id" baseTableName="tbl_condition" constraintName="fk_condition_condition_fragment_id" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="tbl_condition"/>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-29">
+        <addForeignKeyConstraint baseColumnNames="lexicon_id" baseTableName="tbl_condition" constraintName="fk_condition_lexicon_id" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="tbl_lexicon"/>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-30">
+        <addForeignKeyConstraint baseColumnNames="policy_type_id" baseTableName="tbl_policy" constraintName="fk_policy_policy_type_id" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="tbl_policy_type"/>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-31">
+        <addForeignKeyConstraint baseColumnNames="condition_id" baseTableName="tbl_collection" constraintName="fk_collection_condition_id" deferrable="false" initiallyDeferred="false" onDelete="SET NULL" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="tbl_condition"/>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-32">
+        <!-- We need to delete the rows associating the collections and the entry when the entry is deleted -->
+        <addForeignKeyConstraint baseColumnNames="collection_sequence_entry_id" baseTableName="tbl_collection_sequence_entry_collection" constraintName="fk_entry_sequence_entry_id" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="tbl_collection_sequence_entry"/>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-33">
+        <addForeignKeyConstraint baseColumnNames="collection_id" baseTableName="tbl_collection_sequence_entry_collection" constraintName="fk_entry_collection_collection_id" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="tbl_collection"/>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-34">
+        <addForeignKeyConstraint baseColumnNames="collection_id" baseTableName="tbl_collection_policy" constraintName="fk_collection_policy_collection_id" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="tbl_collection"/>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-35">
+        <!-- Delete the lexicon expressions when the lexicon is deleted -->
+        <addForeignKeyConstraint baseColumnNames="lexicon_id" baseTableName="tbl_lexicon_expression" constraintName="fk_lexicon_expression_lexicon_id" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="tbl_lexicon"/>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-36">
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Accessed Date"/>
+            <column name="field_type" value="DATE"/>
+            <column name="fields" value="[&quot;AU_IMPORT_ACCESSEDDATE_EPOCHSECONDS&quot;,&quot;FileAccessedTime&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Author (Domainuser)"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_AUTHOR_DOMAINUSER&quot;,&quot;SP_vti_author&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Author (Fullnames)"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_AUTHOR_FULLNAMES&quot;,&quot;SP_Author&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Author"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_DOCUMENT_AUTHOR_STRING&quot;,&quot;Author&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Author (Username)"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_AUTHOR_USERNAME&quot;,&quot;CreatedBy&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Bcc"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_BCC_RFC822&quot;,&quot;Bcc&quot;,&quot;Bcc&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Category"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_CATEGORY_STRING&quot;,&quot;AU_DOCUMENT_CATEGORY_STRING&quot;,&quot;LIVELINK_CATEGORY&quot;,&quot;Category&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Cc"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_CC_RFC822&quot;,&quot;Cc&quot;,&quot;Cc&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Character Count "/>
+            <column name="field_type" value="NUMBER"/>
+            <column name="fields" value="[&quot;AU_DOCUMENT_CHARACTERCOUNT_NUMBER&quot;,&quot;CharCount&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Comments"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_DOCUMENT_COMMENTS_STRING&quot;,&quot;Comments&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Company"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_DOCUMENT_COMPANY_STRING&quot;,&quot;Company&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Created Date"/>
+            <column name="field_type" value="DATE"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_CREATEDDATE_EPOCHSECONDS&quot;,&quot;AU_REPOSITORY_CREATEDDATE_ISO8601&quot;,&quot;AU_REPOSITORY_CREATEDDATE_GENERAL&quot;,&quot;AU_REPOSITORY_CREATEDDATE_UNIVERSALSORT&quot;,&quot;AU_IMPORT_CREATEDDATE_EPOCHSECONDS&quot;,&quot;AU_DOCUMENT_CREATEDDATE_EPOCHSECONDS&quot;,&quot;CREATED&quot;,&quot;system__createTime&quot;,&quot;PUBLISHED&quot;,&quot;CreateDate&quot;,&quot;SP_vti_timecreated&quot;,&quot;Created_x0020_Date&quot;,&quot;TD_DateCreated&quot;,&quot;IM_ENTRYWHEN&quot;,&quot;FileCreatedTime&quot;,&quot;Create_DTM&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Creating App (Fullwithversion)"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_CREATINGAPP_FULLWITHVERSION&quot;,&quot;AU_DOCUMENT_CREATINGAPP_FULLWITHVERSION&quot;,&quot;X-Mailer&quot;,&quot;Creator&quot;,&quot;AppName&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Document Content"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;Content&quot;,&quot;DRECONTENT&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Editor (Domainuser)"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_EDITOR_DOMAINUSER&quot;,&quot;SP_vti_modifiedby&quot;,&quot;Modified_x0020_By&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Editor (Fullnames)"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_EDITOR_FULLNAMES&quot;,&quot;SP_Editor&quot;,&quot;Editor&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Editor"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_DOCUMENT_EDITOR_STRING&quot;,&quot;LastAuthor&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Edit Time Elapsed (Seconds)"/>
+            <column name="field_type" value="NUMBER"/>
+            <column name="fields" value="[&quot;AU_DOCUMENT_EDITTIMEELAPSED_SECONDS&quot;,&quot;EditTime&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Encoding (Codepage)"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_DOCUMENT_ENCODING_CODEPAGE&quot;,&quot;CodePage&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Document Extension"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;IMPORTMAGICEXTENSION&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="File Class (Exchangemessageclass)"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_FILECLASS_EXCHANGEMESSAGECLASS&quot;,&quot;MESSAGECLASS&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="File Size (Bytes)"/>
+            <column name="field_type" value="NUMBER"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_FILESIZE_BYTES&quot;,&quot;AU_DOCUMENT_FILESIZE_BYTES&quot;,&quot;FileDataSize&quot;,&quot;SP_vti_filesize&quot;,&quot;File_x0020_Size&quot;,&quot;DocumentSize&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Folder Path"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_FOLDERPATH_STRINGPATH&quot;,&quot;FOLDERPATH&quot;,&quot;LL_FullFolderPath&quot;,&quot;FullFolderPath&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="From"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_FROM_RFC822&quot;,&quot;From&quot;,&quot;From&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Hidden Count"/>
+            <column name="field_type" value="NUMBER"/>
+            <column name="fields" value="[&quot;AU_DOCUMENT_HidDENCOUNT_NUMBER&quot;,&quot;HiddenCount&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Imported Date"/>
+            <column name="field_type" value="DATE"/>
+            <column name="fields" value="[&quot;AU_IMPORT_IMPORTEDDATE_EPOCHSECONDS&quot;,&quot;FileImportedTime&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Keyview Class"/>
+            <column name="field_type" value="NUMBER"/>
+            <column name="fields" value="[&quot;AU_DOCUMENT_KEYVIEWCLASS_NUMBER&quot;,&quot;DocumentClass&quot;,&quot;Doc_Class_Code&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Keyview Type"/>
+            <column name="field_type" value="NUMBER"/>
+            <column name="fields" value="[&quot;AU_DOCUMENT_KEYVIEWtype_NUMBER&quot;,&quot;DocumentType&quot;,&quot;Doc_Format_Code&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Keyview Type Version"/>
+            <column name="field_type" value="NUMBER"/>
+            <column name="fields" value="[&quot;AU_DOCUMENT_KEYVIEWtypeVERSION_NUMBER&quot;,&quot;VersionNumber&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Keywords"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_DOCUMENT_KEYWORDS_STRING&quot;,&quot;Keywords&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Last Accessed Date"/>
+            <column name="field_type" value="DATE"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_LASTACCESSEDDATE_EPOCHSECONDS&quot;,&quot;AU_IMPORT_LASTACCESSEDDATE_EPOCHSECONDS&quot;,&quot;LASTACCESSED&quot;,&quot;system__lastActivityTime&quot;,&quot;LASTACCESSED&quot;,&quot;IM_EDITWHEN&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Last Printed Date"/>
+            <column name="field_type" value="DATE"/>
+            <column name="fields" value="[&quot;AU_DOCUMENT_LASTPRINTEDDATE_EPOCHSECONDS&quot;,&quot;LastPrinted&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Last Save Date"/>
+            <column name="field_type" value="DATE"/>
+            <column name="fields" value="[&quot;AU_DOCUMENT_LASTSAVEDATE_EPOCHSECONDS&quot;,&quot;LastSave_DTM&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Line Count"/>
+            <column name="field_type" value="NUMBER"/>
+            <column name="fields" value="[&quot;AU_DOCUMENT_LINECOUNT_NUMBER&quot;,&quot;LineCount&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Manager"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_DOCUMENT_MANAGER_STRING&quot;,&quot;Manager&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Modified Date"/>
+            <column name="field_type" value="DATE"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_MODIFIEDDATE_EPOCHSECONDS&quot;,&quot;AU_REPOSITORY_MODIFIEDDATE_ISO8601&quot;,&quot;AU_REPOSITORY_MODIFIEDDATE_GENERAL&quot;,&quot;AU_IMPORT_MODIFIEDDATE_EPOCHSECONDS&quot;,&quot;LASTMODIFIED&quot;,&quot;UnixDateModified&quot;,&quot;system__lastModifiedTime&quot;,&quot;LASTMODIFIED&quot;,&quot;UPDATED&quot;,&quot;ModifyDate&quot;,&quot;SP_vti_timelastmodified&quot;,&quot;Modified&quot;,&quot;IM_FILEEDITWHEN&quot;,&quot;FileModifiedTime&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Modified Date (Rfc1123)"/>
+            <column name="field_type" value="DATE"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_MODIFIEDDATE_RFC1123&quot;,&quot;Date&quot;,&quot;Sent&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Multimedia Count "/>
+            <column name="field_type" value="NUMBER"/>
+            <column name="fields" value="[&quot;AU_DOCUMENT_MULTIMEDIACOUNT_NUMBER&quot;,&quot;MMClips&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Owner (Domainuser)"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_OWNER_DOMAINUSER&quot;,&quot;FILEOWNER&quot;,&quot;SP_Created_x0020_By&quot;,&quot;Created_x0020_By&quot;,&quot;IM_OPERATOR&quot;,&quot;author&quot;,&quot;FILEOWNER&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Page Count"/>
+            <column name="field_type" value="NUMBER"/>
+            <column name="fields" value="[&quot;AU_DOCUMENT_PAGECOUNT_NUMBER&quot;,&quot;PageCount&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Paragraph Count"/>
+            <column name="field_type" value="NUMBER"/>
+            <column name="fields" value="[&quot;AU_DOCUMENT_PARAGRAPHCOUNT_NUMBER&quot;,&quot;ParCount&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Summary"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_SUMMARY_STRING&quot;,&quot;SUMMARY&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Title"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_TITLE_STRING&quot;,&quot;AU_DOCUMENT_TITLE_STRING&quot;,&quot;Name&quot;,&quot;Subject&quot;,&quot;Subject&quot;,&quot;TS_Title&quot;,&quot;SP_BaseName&quot;,&quot;DISPLAYNAME&quot;,&quot;IM_DOCNAME&quot;,&quot;Subject&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="To"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_TO_RFC822&quot;,&quot;To&quot;,&quot;To&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Url (Urlencoded)"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_URL_URLENCODED&quot;,&quot;SP_EncodedAbsUrl&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Url (Urlunencoded)"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_URL_URLUNENCODED&quot;,&quot;URL&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Version (Major Minor)"/>
+            <column name="field_type" value="STRING"/>
+            <column name="fields" value="[&quot;AU_REPOSITORY_VERSION_MAJORMINOR&quot;,&quot;SP__UIVersionString&quot;,&quot;_UIVersionString&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_field_label">
+            <column name="label_name" value="Word Count"/>
+            <column name="field_type" value="NUMBER"/>
+            <column name="fields" value="[&quot;AU_DOCUMENT_WORDCOUNT_NUMBER&quot;,&quot;WordCount&quot;]"/>
+            <column name="project_id"/>
+        </insert>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-37">
+        <insert tableName="tbl_policy_type">
+            <column name="item_name" value="Metadata"/>
+            <column name="description" value="Policies that update metadata fields."/>
+            <column name="definition" value="{&quot;title&quot;:&quot;Metadata policy Type&quot;,&quot;description&quot;:&quot;A metadata policy.&quot;,&quot;type&quot;:&quot;object&quot;,&quot;properties&quot;:{&quot;fieldActions&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;items&quot;:{&quot;title&quot;:&quot;Field Action&quot;,&quot;type&quot;:&quot;object&quot;,&quot;properties&quot;:{&quot;name&quot;:{&quot;description&quot;:&quot;The name of the field to perform the action on.&quot;,&quot;type&quot;:&quot;string&quot;,&quot;minLength&quot;:1},&quot;action&quot;:{&quot;description&quot;:&quot;The type of action to perform on the field.&quot;,&quot;type&quot;:&quot;string&quot;,&quot;enum&quot;:[&quot;ADD_FIELD_VALUE&quot;]},&quot;value&quot;:{&quot;description&quot;:&quot;The value to use for the field action.&quot;,&quot;type&quot;:&quot;string&quot;}},&quot;required&quot;:[&quot;name&quot;,&quot;action&quot;]}}}}"/>
+            <column name="internal_name" value="MetadataPolicy"/>
+            <column name="conflict_resolution_mode" value="CUSTOM"/>
+            <column name="project_id"/>
+        </insert>
+        <insert tableName="tbl_policy_type">
+            <column name="item_name" value="External"/>
+            <column name="description" value="Policies that are used to reference external policies."/>
+            <column name="definition" value="{&quot;description&quot;:&quot;An external policy.&quot;,&quot;properties&quot;:{&quot;externalReference&quot;:{&quot;type&quot;:&quot;string&quot;}},&quot;required&quot;:[&quot;externalReference&quot;],&quot;title&quot;:&quot;External policy Type&quot;,&quot;type&quot;:&quot;object&quot;}"/>
+            <column name="internal_name" value="ExternalPolicy"/>
+            <column name="conflict_resolution_mode" value="CUSTOM"/>
+            <column name="project_id"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="1495670380000-38" author="CAF">
+        <addForeignKeyConstraint baseColumnNames="excluded_condition_id" baseTableName="tbl_collection_sequence" constraintName="fk_collection_sequence_excluded_fragment_id" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="tbl_condition"/>
+    </changeSet>
+
+    <changeSet author="CAF" id="1495670380000-39">
+        <createTable tableName="tbl_sequence_workflow">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="primary_sequence_workflow"/>
+            </column>
+            <column name="item_name" type="VARCHAR(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="CLOB"/>
+            <column name="notes" type="CLOB"/>
+            <column name="project_id" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <modifySql dbms="mysql">
+            <append value=" ENGINE=INNODB CHARSET=utf8mb4 COLLATE UTF8MB4_UNICODE_CI"/>
+        </modifySql>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-40">
+        <createIndex indexName="indx1_tbl_sequence_workflow" tableName="tbl_sequence_workflow">
+            <column name="project_id"/>
+        </createIndex>
+        <createIndex indexName="indx2_tbl_sequence_workflow" tableName="tbl_sequence_workflow">
+            <column name="id"/>
+            <column name="project_id"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="CAF" id="1495670380000-41">
+        <createTable tableName="tbl_sequence_workflow_sequences">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="primary_sequence_workflow_entry"/>
+            </column>
+            <column name="sequence_workflow_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="collection_sequence_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="entry_order" type="SMALLINT(5)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="project_id" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <modifySql dbms="mysql">
+            <append value=" ENGINE=INNODB CHARSET=utf8mb4 COLLATE UTF8MB4_UNICODE_CI"/>
+        </modifySql>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-42">
+        <createIndex indexName="indx1_tbl_sequence_workflow_sequences" tableName="tbl_sequence_workflow_sequences">
+            <column name="sequence_workflow_id"/>
+            <column name="project_id"/>
+        </createIndex>
+        <createIndex indexName="indx2_tbl_sequence_workflow_sequences" tableName="tbl_sequence_workflow_sequences">
+            <column name="collection_sequence_id"/>
+            <column name="project_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="CAF" id="1495670380000-43">
+        <addForeignKeyConstraint baseColumnNames="collection_sequence_id" baseTableName="tbl_sequence_workflow_sequences" constraintName="fk_constraint_tbl_sequence_workflow_sequence_csids" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="tbl_collection_sequence"/>
+        <addForeignKeyConstraint baseColumnNames="sequence_workflow_id" baseTableName="tbl_sequence_workflow_sequences" constraintName="fk_constraint_tbl_sequence_workflow_sequence_workflow_ids" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="tbl_sequence_workflow"/>
+    </changeSet>
+
+    <changeSet author="CAF" id="1495670380000-44">
+        <insert tableName="tbl_release_history">
+            <column name="release" value="conditionEngine 1.0"/>
+            <column name="date_stamp" valueComputed="now()"/>
+            <column name="major_version" type="SMALLINT(5)" value="1"/>
+            <column name="minor_version" type="SMALLINT(5)" value="0"/>
+            <column name="revision" type="SMALLINT(5)" value="0"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

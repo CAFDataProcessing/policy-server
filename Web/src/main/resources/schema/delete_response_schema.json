@@ -1,0 +1,28 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "API",
+    "description": "The response from delete.",
+    "type": "object",
+    "properties":{
+        "result": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "multipleOf": 1.0
+                    },
+                    "success": {
+                        "type":"boolean"
+                    },
+                    "error_message": {
+                        "type": ["string","null"]
+                    }
+                },
+                "required": ["id", "success", "error_message"]
+            }
+        }
+    },
+    "required": ["result"]
+}

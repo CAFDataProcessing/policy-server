@@ -1,0 +1,21 @@
+package ${ver.package.name};
+
+/**
+ * Utility class template -  to provide versioning information.
+ */
+public final class ${ver.class.name} {
+
+    private static String VERSION="${ver.buildnum}";
+    private static String TIMESTAMP="${ver.buildtime}";
+    private static String BUILDER="${ver.builduser}";
+
+    public static String getCurrentVersion() {
+
+       return VERSION;
+    }
+
+    public static String getCurrentVersionInfo() {
+
+        return "Version: " + VERSION + " Timestamp: " + TIMESTAMP + " By: " + BUILDER;
+    }
+}

@@ -1,0 +1,55 @@
+{
+    "apiTests": [
+        {
+            "description": "No additional",
+            "valid": true,
+            "json": {
+                "type": "collection",
+                "name": "My collection",
+                "description": "My description"
+            }
+        },
+        {
+            "description": "With policy ids",
+            "valid": true,
+            "json": {
+                "type": "collection",
+                "name": "My collection",
+                "description": "My description",
+                "additional": {
+                    "policy_ids": [1,2,3]
+                }
+            }
+        },
+        {
+            "description": "With invalid policy id",
+            "valid": false,
+            "json": {
+                "type": "collection",
+                "name": "My collection",
+                "description": "My description",
+                "additional": {
+                    "policy_ids": [1.5]
+                }
+            }
+        },
+        {
+            "description": "With condition",
+            "valid": true,
+            "json": {
+                "type": "collection",
+                "name": "My collection",
+                "description": "My description",
+                "additional": {
+                    "condition": {
+                        "type": "condition",
+                        "additional": {
+                            "type": "boolean",
+                            "operator": "and"
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

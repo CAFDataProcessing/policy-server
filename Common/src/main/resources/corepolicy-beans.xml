@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2015-2017 Hewlett Packard Enterprise Development LP.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean id="periodConverter" class="com.github.cafdataprocessing.corepolicy.common.PeriodConverter" />
+            </set>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer"/>
+
+    <context:component-scan base-package="com.github.cafdataprocessing.corepolicy.common"/>
+
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="validationMessageSource">
+            <ref bean="resourceBundleLocator"/>
+        </property>
+    </bean>
+    <bean name="resourceBundleLocator" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>classpath:validation</value>
+            </list>
+        </property>
+    </bean>
+    <bean class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor">
+        <property name="validator" ref="validator"/>
+    </bean>
+
+    <!-- ensure we have destruction callbacks and end of request/thread. -->
+    <beans profile="web-application-scope">
+        <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+            <property name="scopes">
+                <map>
+                    <entry key="thread">
+                        <bean class="org.springframework.web.context.request.RequestScope"/>
+                    </entry>
+                </map>
+            </property>
+        </bean>
+    </beans>
+
+    <beans profile="application-scope">
+        <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+            <property name="scopes">
+                <map>
+                    <entry key="thread">
+                        <bean class="org.springframework.context.support.SimpleThreadScope"/>
+                    </entry>
+                </map>
+            </property>
+        </bean>
+    </beans>
+
+    <beans profile="api">
+        <context:component-scan base-package="com.github.cafdataprocessing.corepolicy.comparators"/>
+        <context:component-scan base-package="com.github.cafdataprocessing.corepolicy.conditionEvaluators"/>
+        <context:component-scan base-package="com.github.cafdataprocessing.corepolicy.domainModels"/>
+        <context:component-scan base-package="com.github.cafdataprocessing.corepolicy.policy"/>
+        <context:component-scan base-package="com.github.cafdataprocessing.corepolicy.tokenizers"/>
+        <context:component-scan base-package="com.github.cafdataprocessing.corepolicy.validation"/>
+        <bean class="com.github.cafdataprocessing.corepolicy.ConditionEngineImpl"/>
+        <bean class="com.github.cafdataprocessing.corepolicy.PolicyEngineImpl"/>
+        <bean class="com.github.cafdataprocessing.corepolicy.ExcludedContentProcessorImpl"/>
+    </beans>
+
+    <beans profile="environmentcache-fs">
+        <bean class="com.github.cafdataprocessing.corepolicy.environment.EnvironmentSnapshotCacheImpl"/>
+        <bean class="com.github.cafdataprocessing.corepolicy.environment.InitializationPipelineImpl" name="Pipeline"/>
+        <bean class="com.github.cafdataprocessing.corepolicy.environment.FilesystemInitializer"/>
+        <bean class="com.github.cafdataprocessing.corepolicy.environment.FilesystemPersistence"/>
+        <bean class="com.github.cafdataprocessing.corepolicy.environment.ApiInitializer"/>
+        <bean class="com.github.cafdataprocessing.corepolicy.environment.BooleanAgentInitializer"/>
+    </beans>
+
+
+    <beans profile="threadusercontext">
+        <bean class="com.github.cafdataprocessing.corepolicy.api.ThreadUserContext" scope="thread">
+            <aop:scoped-proxy proxy-target-class="false"/>
+        </bean>
+    </beans>
+
+    <beans profile="administrationusercontext">
+        <bean class="com.github.cafdataprocessing.corepolicy.common.AdminUserContext" scope="thread">
+            <aop:scoped-proxy proxy-target-class="false"/>
+        </bean>
+    </beans>
+
+    <beans profile="apiweb">
+        <bean class="com.github.cafdataprocessing.corepolicy.api.ClassificationApiJavaImpl"/>
+        <bean class="com.github.cafdataprocessing.corepolicy.api.PolicyApiJavaImpl"/>
+        <bean class="com.github.cafdataprocessing.corepolicy.api.EnvironmentSnapshotApiJavaImpl"/>
+        <bean class="com.github.cafdataprocessing.corepolicy.api.ClassifyDocumentApiJavaImpl"/>
+        <bean class="com.github.cafdataprocessing.corepolicy.api.AdminApiJavaImpl" />
+        <bean class="com.github.cafdataprocessing.corepolicy.api.WorkflowApiJavaImpl" />
+    </beans>
+
+    <beans profile="apidirect">
+        <context:component-scan base-package="com.github.cafdataprocessing.corepolicy.repositories"/>
+        <bean class="com.github.cafdataprocessing.corepolicy.environment.EnvironmentSnapshotApiImpl"/>
+        <bean class="com.github.cafdataprocessing.corepolicy.api.ClassifyDocumentApiDirectImpl"/>
+    </beans>
+
+    <beans profile="apihibernate">
+        <context:component-scan base-package="com.github.cafdataprocessing.corepolicy.hibernate"/>
+        <bean class="com.github.cafdataprocessing.corepolicy.hibernate.HibernateExecutionContextProviderImpl" >
+            <qualifier value="repositoryExecutionContextProvider" />
+        </bean>
+    </beans>
+
+    <beans profile="apidirect-environment-snapshot-repository-none">
+        <bean class="com.github.cafdataprocessing.corepolicy.repositories.EnvironmentSnapshotRepositoryNullImpl" />
+    </beans>
+
+    <beans profile="elastic">
+        <context:component-scan base-package="com.github.cafdataprocessing.corepolicy.booleanagent"/>
+    </beans>
+
+    <beans profile="noelastic">
+        <bean class="com.github.cafdataprocessing.corepolicy.booleanagent.BooleanAgentServicesNotAvailableImpl"/>
+        <bean class="com.github.cafdataprocessing.corepolicy.booleanagent.ConditionToBooleanAgentConverterImpl"/>
+    </beans>
+
+    <beans profile="webserver">
+        <!-- The web base package is registered in the dispatcher servlet config to pick up controllers -->
+        <!-- These beans are required by the application as opposed to web infrastructure -->
+        <bean class="com.github.cafdataprocessing.corepolicy.GenerateDemoContent"/>
+        <bean class="com.github.cafdataprocessing.corepolicy.web.HttpUserContext"/>
+    </beans>
+</beans>

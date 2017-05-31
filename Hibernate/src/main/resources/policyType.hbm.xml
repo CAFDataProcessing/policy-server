@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!--
+
+    Copyright 2015-2017 Hewlett Packard Enterprise Development LP.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.github.cafdataprocessing.corepolicy.common.dto.PolicyType" table="tbl_policy_type">
+        <id column="id" name="id" access="field">
+            <generator class="identity"/>
+        </id>
+        <property name="name" column="item_name" access="field"/>
+        <property name="description" column="description" access="field" type="com.github.cafdataprocessing.corepolicy.hibernate.userTypes.TextUserType">
+        </property>
+        <property name="shortName" column="internal_name" access="field" type="java.lang.String"/>
+
+        <property name="definition" column="definition" access="field">
+            <type name="com.github.cafdataprocessing.corepolicy.hibernate.userTypes.JsonUserType">
+                <param name="classType">com.fasterxml.jackson.databind.JsonNode</param>
+                <param name="type">2005</param>
+            </type>
+        </property>
+        <property name="conflictResolutionMode" access="field" column="conflict_resolution_mode">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.github.cafdataprocessing.corepolicy.common.dto.ConflictResolutionMode</param>
+                <param name="type">12</param>
+            </type>
+        </property>
+
+        <property name="projectId" column="project_id" access="field" type="java.lang.String"/>
+    </class>
+
+</hibernate-mapping>

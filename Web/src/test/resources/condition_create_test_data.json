@@ -1,0 +1,93 @@
+{
+    "apiTests": [
+        {
+            "description": "Boolean condition",
+            "valid": true,
+            "json": {
+                "type": "condition",
+                "additional": {
+                    "type": "boolean",
+                    "operator": "and"
+                }
+            }
+        },
+        {
+            "description": "Boolean Invalid operator",
+            "valid": false,
+            "json": {
+                "type": "condition",
+                "additional": {
+                    "type": "boolean",
+                    "operator": "andy"
+                }
+            }
+        },
+        {
+            "description": "Boolean no operator",
+            "valid": false,
+            "json": {
+                "type": "condition",
+                "additional": {
+                    "type": "boolean"
+                }
+            }
+        },
+        {
+            "description": "Boolean with children",
+            "valid": true,
+            "json": {
+                "type": "condition",
+                "additional": {
+                    "type": "boolean",
+                    "operator": "and",
+                    "children": [
+                        {
+                            "type":"condition",
+                            "additional":{
+                                "type": "exists",
+                                "field":"my field"
+                            }
+                        },{
+                            "type":"condition",
+                            "additional":{
+                                "type": "exists",
+                                "field":"my other field"
+                            }
+                        }
+                    ]
+                }
+            }
+        },{
+            "description": "regex condition with field and value",
+            "valid": true,
+            "json": {
+                "type": "condition",
+                "additional": {
+                    "type": "regex",
+                    "field": "f",
+                    "value": "v"
+                }
+            }
+        },{
+            "description": "regex condition no field",
+            "valid": false,
+            "json": {
+                "type": "condition",
+                "additional": {
+                    "type": "regex",
+                    "value": "v"
+                }
+            }
+        },{
+            "description": "regex condition no value",
+            "valid": false,
+            "json": {
+                "type": "condition",
+                "additional": {
+                    "type": "regex",
+                    "field": "f"
+                }
+            }
+        }
+    ]
+}

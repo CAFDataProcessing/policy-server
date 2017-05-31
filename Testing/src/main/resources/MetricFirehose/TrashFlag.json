@@ -1,0 +1,12 @@
+{
+	"document": [
+		{
+			"title": "Trash - Extn and Flag",
+			"reference": "TrashExtnAndFlag",
+			"content": "Some Content",
+			"extension": "trash",
+			"TrashFlag1": "0",
+			"TrashFlag2": "0"
+		}
+	]
+}

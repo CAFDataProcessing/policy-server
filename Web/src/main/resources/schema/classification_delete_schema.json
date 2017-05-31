@@ -1,0 +1,25 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "API",
+    "description": "Delete classification objects.",
+    "type": "object",
+    "properties":{
+        "type": {
+            "enum": ["collection_sequence", "collection", "lexicon", "lexicon_expression", "field_label"]
+        },
+        "id": {
+            "oneOf": [
+                {
+                    "type": "number"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "number",
+                        "multipleOf": 1.0
+                    }
+                }
+            ]
+        }
+    }
+}

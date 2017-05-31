@@ -1,0 +1,10 @@
+{
+	"document": [
+		{
+			"title": "Trash - Extension",
+			"reference": "TrashExtn",
+			"content": "Some Content",
+			"extension": "trash"
+		}
+	]
+}

@@ -1,0 +1,641 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2015-2017 Hewlett Packard Enterprise Development LP.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>corepolicy-aggregator</artifactId>
+        <groupId>com.github.cafdataprocessing</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>corepolicy-elasticsearch-container</artifactId>
+    <name>Core Policy Elasticsearch Docker Container</name>
+    <description>
+        Builds a Docker container with a core policy web server running in Tomcat and alongside an Elasticsearch install.
+    </description>
+    <packaging>pom</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.krallin</groupId>
+            <artifactId>tini</artifactId>
+            <version>${tini.version}</version>
+            <scope>runtime</scope>
+            <type>exe</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.cafdataprocessing</groupId>
+            <artifactId>corepolicy-web</artifactId>
+            <version>${project.parent.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat</artifactId>
+            <version>8.0.15</version>
+            <type>zip</type>
+        </dependency>
+
+        <!-- dependencies only required when running integration tests or compiling source for them. -->
+        <!-- do not confuse with the dependencies above, which are used inside the container image -->
+        <dependency>
+            <groupId>com.github.cafdataprocessing</groupId>
+            <artifactId>corepolicy-condition-engine</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.cafdataprocessing</groupId>
+            <artifactId>corepolicy-repositories</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.cafdataprocessing</groupId>
+            <artifactId>corepolicy-api</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.cafdataprocessing</groupId>
+            <artifactId>corepolicy-hibernate</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <!-- only needed for db installer container for testing -->
+        <dependency>
+            <groupId>com.github.cafdataprocessing</groupId>
+            <artifactId>corepolicy-database</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>args4j</groupId>
+            <artifactId>args4j</artifactId>
+            <version>2.0.26</version>
+        </dependency>
+
+        <!--Hibernate databases config-->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.187</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <dependency>
+            <!--Required at runtime for log4j output-->
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <!--Required at runtime for log4j output-->
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <!--ADAPTER (not bridge) that allows slf4j api to route to the log4j implm-->
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>2.0-rc2</version>
+            <scope>runtime</scope>
+            <exclusions>
+               <exclusion>
+                    <artifactId>log4j-api</artifactId>
+                    <groupId>org.apache.logging.log4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Scope is not test because I wanted to run tests from command line-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <properties>
+        <fileSet.outputDirectory>startup</fileSet.outputDirectory>
+
+        <container.policyelasticsearchbase.name>cafinternal/prereleases:policy-elasticsearch-base-1.0.0-SNAPSHOT</container.policyelasticsearchbase.name>
+        <container.policyserver.name>cafinternal/prereleases:policy-admin-elasticsearch-${project.version}</container.policyserver.name>
+        <container.integration.tests.basedir>/opt/integration-tests</container.integration.tests.basedir>
+        <container.caf.configs.directory>configs</container.caf.configs.directory>
+
+        <!-- Settings which are required to run the actual container in docker start. -->
+        <container.run.java.mem.min>384</container.run.java.mem.min>
+        <container.run.java.mem.max>384</container.run.java.mem.max>
+
+        <!-- This config is used from the testing machine, as such we need the docker host address and dynamically exported port.
+            Of course you can make
+        both this config, and the config used from inside the container point to your own DB, but this is the default setup, which create a new linked container from scratch for
+        each test run -->
+        <hibernate.connectionstring>jdbc:postgresql://${docker.host.address}:${postgres.db.port}/&lt;dbname&gt;</hibernate.connectionstring>
+
+        <!-- The reason behind having 2 here connection strings, is that we also connect to the DB from inside the worker containers.  It doesn't use
+        dnslookup, as its on a private network, it instead uses a fixed name called callingSystem, which you can map to anything you want. It is then added
+        to the containers host file. -->
+        <internal.hibernate.connectionstring>jdbc:postgresql://integrationtests-corepolicydb-postgres:5432/&lt;dbname&gt;</internal.hibernate.connectionstring>
+
+        <hibernate.user>postgres</hibernate.user>
+        <hibernate.password>root</hibernate.password>
+        <hibernate.databasename>corepolicy</hibernate.databasename>
+        <engine.environmentcache.location>/var/corepolicy/envcache</engine.environmentcache.location>
+    </properties>
+
+    <build>
+        <testSourceDirectory>../Testing/src/test/java</testSourceDirectory>
+        <testResources>
+            <testResource>
+                <directory>../Testing/src/test/resources</directory>
+            </testResource>
+        </testResources>
+
+        <sourceDirectory>../Testing/src/main/java</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>../Testing/src/main/resources</directory>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.9.1</version>
+                <executions>
+                    <execution>
+                        <id>add-integration-test-source-as-test-sources</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>../Testing/src/main/java</source>
+                                <source>../Testing/src/test/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-integration-test-resource</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>add-test-resource</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>../Testing/src/main/resources</directory>
+                                </resource>
+                                <resource>
+                                    <directory>../Testing/src/test/resources</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>parse-project-version-number</id>
+                        <goals>
+                            <goal>parse-version</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <version>${maven.failsafe.version}</version>
+                <configuration>
+                    <skip>false</skip>
+                    <systemPropertyVariables>
+                        <testing.indocker>true</testing.indocker>
+                        <testing.webinhibernate>true</testing.webinhibernate>
+                        <testing.webinhibernate>true</testing.webinhibernate>
+                        <api.mode>web</api.mode>
+                        <api.direct.repository>none</api.direct.repository>
+                        <api.webservice.url>http://${docker.host.address}:${docker.host.exposed.tomcat.service.port}/corepolicy</api.webservice.url>
+                        <POLICY_ELASTICSEARCH_DISABLED>false</POLICY_ELASTICSEARCH_DISABLED>
+                        <POLICY_ELASTICSEARCH_HOST>${docker.host.address}</POLICY_ELASTICSEARCH_HOST>
+                        <POLICY_ELASTICSEARCH_PORT>${docker.host.exposed.elasticsearch.javaapi.port}</POLICY_ELASTICSEARCH_PORT>
+                        <hibernate.connectionstring>${hibernate.connectionstring}</hibernate.connectionstring>
+                        <hibernate.user>${hibernate.user}</hibernate.user>
+                        <hibernate.password>${hibernate.password}</hibernate.password>
+                        <hibernate.databasename>${hibernate.databasename}</hibernate.databasename>
+                    </systemPropertyVariables>
+                    <!--<debugForkedProcess>true</debugForkedProcess>-->
+                    <reportsDirectory>${project.build.directory}/failsafe-reports</reportsDirectory>
+                    <summaryFile>${project.build.directory}/failsafe-reports/summary.xml</summaryFile>
+                </configuration>
+            </plugin>
+
+            <!-- Plugin for compiling the test source files. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.version}</version>
+                <executions>
+                    <execution>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Docker Plugin is used to build the container, start / stop the container during verify and deploy it
+                to repository at the end -->
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${fabric8.docker.maven.version}</version>
+                <executions>
+                    <!-- Build the container in compile phase. -->
+                    <execution>
+                        <id>build-docker-container</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                    <!-- Start the containers in pre-integration-test phase. -->
+                    <execution>
+                        <id>start</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                    </execution>
+                    <!-- Stop the containers in post-integration-test phase. -->
+                    <execution>
+                        <id>stop</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                    <!-- Push the docker image for the worker to Artifactory in deploy phase -->
+                    <execution>
+                        <id>upload-docker-container</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>push</goal>
+                        </goals>
+                        <configuration>
+                            <filter>policy-server</filter>
+                        </configuration>
+                    </execution>
+                </executions>
+
+                <!-- Common Docker container description / config which may be used for build / pushes. -->
+                <configuration>
+                    <skip>false</skip>
+                    <verbose>true</verbose>
+                    <logDate>default</logDate>
+                    <autoPull>always</autoPull>
+
+                    <images>
+                        <!-- pull in a normal postgres DB, we will mount a volume containing our scripts as a linked volume -->
+                        <image>
+                            <alias>integrationtests-corepolicydb-postgres</alias>
+                            <name>postgres:9.4</name>
+                            <run>
+                                <ports>
+                                    <port>${postgres.db.port}:5432</port>
+                                </ports>
+                                <env>
+                                    <POSTGRES_PASSWORD>root</POSTGRES_PASSWORD>
+                                    <POSTGRES_USER>postgres</POSTGRES_USER>
+                                    <POSTGRES_DB>corepolicy</POSTGRES_DB>
+                                </env>
+                                <wait>
+                                    <log>PostgreSQL init process complete</log>
+                                    <time>60000</time>
+                                    <shutdown>500</shutdown>
+                                </wait>
+                                <log>
+                                    <enabled>true</enabled>
+                                </log>
+                            </run>
+                        </image>
+
+                        <!-- Ensure Db installer is started before the main corepolicy container for tests - so placed at top -->
+                        <image>
+                            <alias>integrationtests-corepolicy-dbinstaller</alias>
+                            <name>policy/integrationtests/dbinstaller</name>
+                            <build>
+                                <from>java:8</from>
+                                <tags>
+                                    <tag>built-as-part-of-${project.parent.artifactId}-latest</tag>
+                                    <tag>temporary-item-please-remove</tag>
+                                </tags>
+                                <assembly>
+                                    <basedir>/</basedir>
+                                    <inline>
+                                        <dependencySets>
+                                            <dependencySet>
+                                                <fileMode>0755</fileMode>
+                                                <useProjectArtifact>true</useProjectArtifact>
+                                                <includes>
+                                                    <include>com.github.cafdataprocessing:corepolicy-database</include>
+                                                </includes>
+                                                <outputFileNameMapping>corepolicy-database.jar</outputFileNameMapping>
+                                            </dependencySet>
+                                        </dependencySets>
+                                    </inline>
+                                </assembly>
+                            </build>
+                            <run>
+                                <links>
+                                    <link>integrationtests-corepolicydb-postgres</link>
+                                </links>
+                                <log>
+                                    <enabled>true</enabled>
+                                </log>
+                                <cmd>java
+                                    -Dapi.mode=direct
+                                    -Dapi.direct.repository=hibernate
+                                    -Dhibernate.connectionstring=${internal.hibernate.connectionstring}
+                                    -Dhibernate.user=${hibernate.user}
+                                    -Dhibernate.password=${hibernate.password}
+                                    -Dhibernate.databasename=${hibernate.databasename}
+                                    -jar /corepolicy-database.jar -c
+                                </cmd>
+                                <wait>
+                                    <log>DB update finished.</log>
+                                    <time>60000</time>
+                                    <shutdown>500</shutdown>
+                                </wait>
+                            </run>
+                        </image>
+
+                        <image>
+                            <alias>policy-server</alias>
+                            <name>${container.policyserver.name}</name>
+                            <build>
+                                <from>${container.policyelasticsearchbase.name}</from>
+                                <labels>
+                                    <Build.Number>${project.version}</Build.Number>
+                                    <Build.Date>${maven.build.timestamp}</Build.Date>
+                                    <Git.Branch>${git.branch}</Git.Branch>
+                                    <Git.Commit>${git.revision}</Git.Commit>
+                                </labels>
+                                <!-- Expose port for tomcat -->
+                                <ports>
+                                    <port>8080</port>
+                                </ports>
+                                <env>
+                                    <CATALINA_HOME>/opt/tomcat</CATALINA_HOME>
+                                    <PATH>$PATH:$CATALINA_HOME/bin</PATH>
+                                </env>
+                                <!-- Run application through tini -->
+                                <entryPoint>
+                                    <exec>
+                                        <args>/opt/tini-${tini.version}.exe</args>
+                                        <args>--</args>
+                                    </exec>
+                                </entryPoint>
+                                <runCmds>
+                                    <runCmd>mv /opt/${fileSet.outputDirectory}/apache-tomcat-* /opt/tomcat</runCmd>
+                                    <runCmd>mkdir /var/corepolicy</runCmd>
+                                    <runCmd>mkdir ${engine.environmentcache.location}</runCmd>
+                                    <runCmd>mv /opt/${fileSet.outputDirectory}/corepolicy.war /opt/tomcat/webapps/</runCmd>
+                                </runCmds>
+                                <cmd>/opt/${fileSet.outputDirectory}/start.sh</cmd>
+                                <assembly>
+                                    <basedir>/opt</basedir>
+                                    <mode>tar</mode>
+                                    <inline>
+                                        <dependencySets>
+                                            <dependencySet>
+                                                <useProjectArtifact>false</useProjectArtifact>
+                                                <fileMode>0755</fileMode>
+                                                <unpack>true</unpack>
+                                                <includes>
+                                                    <include>org.apache.tomcat:tomcat</include>
+                                                </includes>
+                                                <outputDirectory>${fileSet.outputDirectory}</outputDirectory>
+                                            </dependencySet>
+                                            <dependencySet>
+                                                <useProjectArtifact>true</useProjectArtifact>
+                                                <includes>
+                                                    <include>com.github.cafdataprocessing:corepolicy-web</include>
+                                                </includes>
+                                                <outputDirectory>${fileSet.outputDirectory}</outputDirectory>
+                                                <outputFileNameMapping>corepolicy.war</outputFileNameMapping>
+                                            </dependencySet>
+                                            <dependencySet>
+                                                <useProjectArtifact>false</useProjectArtifact>
+                                                <fileMode>0755</fileMode>
+                                                <includes>
+                                                    <include>com.github.krallin:tini</include>
+                                                </includes>
+                                            </dependencySet>
+                                        </dependencySets>
+                                        <files>
+                                            <file>
+                                                <source>start.sh</source>
+                                                <outputDirectory>${fileSet.outputDirectory}</outputDirectory>
+                                                <fileMode>0755</fileMode>
+                                                <lineEnding>unix</lineEnding>
+                                            </file>
+                                        </files>
+                                    </inline>
+                                </assembly>
+                            </build>
+
+                            <run>
+                                <hostname>policy-server</hostname>
+                                <ports>
+                                    <!-- Expose port for tomcat -->
+                                    <port>${docker.host.exposed.tomcat.service.port}:8080</port>
+                                    <!-- Expose port only for elasticsearch tests, not used in published container -->
+                                    <port>${docker.host.exposed.elasticsearch.javaapi.port}:9300</port>
+                                    <!-- Expose port for remote debugging -->
+                                    <port>${remote.debug}:5005</port>
+                                </ports>
+                                <env>
+                                    <api.mode>direct</api.mode>
+                                    <POLICY_ELASTICSEARCH_DISABLED>false</POLICY_ELASTICSEARCH_DISABLED>
+                                    <_JAVA_OPTIONS>-Xms${container.run.java.mem.min}m -Xmx${container.run.java.mem.max}m</_JAVA_OPTIONS>
+                                    <!-- As Elasticsearch and the policy web project are both Java applications it is best to use
+                                        the Tomcat specific environment variable to debug Policy Server -->
+                                    <!--<CATALINA_OPTS>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005</CATALINA_OPTS>-->
+                                    <api.direct.repository>hibernate</api.direct.repository>
+                                    <hibernate.connectionstring>${internal.hibernate.connectionstring}</hibernate.connectionstring>
+                                    <hibernate.user>${hibernate.user}</hibernate.user>
+                                    <hibernate.password>${hibernate.password}</hibernate.password>
+                                    <hibernate.databasename>${hibernate.databasename}</hibernate.databasename>
+                                    <engine.environmentcache.location>${engine.environmentcache.location}</engine.environmentcache.location>
+                                    <ELASTICSEARCH_CONFIG_FILE>${container.integration.tests.basedir}/${container.caf.configs.directory}/elasticsearch.yml</ELASTICSEARCH_CONFIG_FILE>
+                                    <ELASTICSEARCH_LOGGING_FILE>${container.integration.tests.basedir}/${container.caf.configs.directory}/logging.yml</ELASTICSEARCH_LOGGING_FILE>
+                                    <es.logger.level>DEBUG</es.logger.level>
+                                </env>
+                                <ulimits>
+                                    <ulimit>
+                                        <name>memlock</name>
+                                        <hard>-1</hard>
+                                        <soft>-1</soft>
+                                    </ulimit>
+                                </ulimits>
+                                <wait>
+                                    <http>
+                                        <!-- note health check uses external port exposed on docker VM, it may be in bridged mode, or running
+                                        in its own machine, in which case, this can be the same as the container.run.tomcat.service.port -->
+                                        <url>http://${docker.host.address}:${docker.host.exposed.tomcat.service.port}/corepolicy/healthcheck?project_id=1</url>
+                                        <method>GET</method>
+                                    </http>
+                                    <time>360000</time>
+                                    <shutdown>500</shutdown>
+                                </wait>
+                                <volumes>
+                                    <from>
+                                        <volume>policyserver-test-configs</volume>
+                                    </from>
+                                </volumes>
+                                <links>
+                                    <link>integrationtests-corepolicydb-postgres</link>
+                                </links>
+                                <log>
+                                    <!-- enable logs from the container, they will show with policy-server> prefix
+                                    and in the colour yellow -->
+                                    <color>yellow</color>
+                                    <enabled>true</enabled>
+                                </log>
+                            </run>
+                        </image>
+
+                        <image>
+                            <alias>policyserver-test-configs</alias>
+                            <name>policy/server/integrationtests/configs</name>
+                            <build>
+                                <tags>
+                                    <tag>built-as-part-of-${project.parent.artifactId}-latest</tag>
+                                    <tag>temporary-item-please-remove</tag>
+                                </tags>
+                                <assembly>
+                                    <basedir>${container.integration.tests.basedir}/${container.caf.configs.directory}</basedir>
+                                    <inline>
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>test-configs</directory>
+                                                <outputDirectory>/</outputDirectory>
+                                                <includes>
+                                                    <include>*</include>
+                                                </includes>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                </assembly>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <id>failsafe-reporting-corepolicy-elasticsearch-container</id>
+                        <configuration>
+                            <outputName>corepolicy-elasticsearch-container</outputName>
+                            <reportsDirectories>
+                                <file>${project.build.directory}/failsafe-reports</file>
+                            </reportsDirectories>
+                        </configuration>
+                        <reports>
+                            <report>failsafe-report-only</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <profiles>
+        <profile>
+            <id>use-default-fixed-ports</id>
+            <properties>
+                <docker.host.exposed.tomcat.service.port>9100</docker.host.exposed.tomcat.service.port>
+                <docker.host.exposed.elasticsearch.javaapi.port>9300</docker.host.exposed.elasticsearch.javaapi.port>
+            </properties>
+        </profile>
+
+        <!-- profile to optionally disable build of a container, you can enable this profile, and run your tests against
+        a fixed container without rebuilding each time. -->
+        <profile>
+            <id>skip-build-docker-container</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>build-docker-container</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                                <configuration>
+                                    <skip>true</skip>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

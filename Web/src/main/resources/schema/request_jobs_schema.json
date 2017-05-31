@@ -1,0 +1,437 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "API",
+    "description": "Request work for policy agent.",
+    "type": "object",
+    "properties":{
+        "name": {
+            "description": "TODO",
+            "type": "string",
+            "minLength": 1
+        },
+        "description": {
+            "description": "TODO",
+            "type": "string"
+        },
+        "type": {
+            "enum": ["collection_sequence", "collection", "condition", "lexicon", "lexicon_expression"]
+        }
+    },
+    "required": ["type"],
+    "oneOf": [
+        {
+            "$ref": "#/definitions/collection_sequence"
+        },
+        {
+            "$ref": "#/definitions/collection"
+        },
+        {
+            "$ref": "#/definitions/condition"
+        },
+        {
+            "$ref": "#/definitions/lexicon"
+        },
+        {
+            "$ref": "#/definitions/lexicon_expression"
+        }
+    ],
+    "definitions": {
+        "collection_sequence": {
+            "description": "TODO",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": ["collection_sequence"]
+                },
+                "additional": {
+                    "type": "object",
+                    "properties": {
+                        "collection_sequence_entries": {
+                            "description": "collection sequence entries",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/collection_sequence_entry"
+                            }
+                        },
+                        "default_collection_id": {
+                            "type": "number",
+                            "multipleOf": 1.0
+                        },
+                        "excluded_document_condition_id": {
+                            "type": "number",
+                            "multipleOf": 1.0
+                        },
+                        "full_condition_evaluation": {
+                            "type": "boolean"
+                        },
+                        "last_modified": {
+                            "type": "string"
+                        },
+                        "collection_count": {
+                            "type": "number"
+                        }
+                    }
+                }
+            },
+            "required": ["name"]
+        },
+        "collection_sequence_entry": {
+            "description": "TODO",
+            "type": "object",
+            "properties": {
+                "order": {
+                    "description": "TODO",
+                    "type": "number",
+                    "multipleOf": 1.0
+                },
+                "collection_ids": {
+                    "description": "Ids of collections",
+                    "type": "array",
+                    "items": {
+                        "type": "number",
+                        "multipleOf": 1.0
+                    }
+                },
+                "stop_on_match": {
+                    "description": "stop on match check",
+                    "type": "boolean"
+                }
+            }
+        },
+        "collection": {
+            "description": "TODO",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": ["collection"]
+                },
+                "additional": {
+                    "type": "object",
+                    "properties": {
+                        "condition": {
+                            "description": "condition of collection",
+                            "$ref": "#/definitions/condition"
+                        },
+                        "policy_ids": {
+                            "description": "policy id array",
+                            "type": "array",
+                            "items": {
+                                "type": "number",
+                                "multipleOf": 1.0
+                            }
+                        }
+                    }
+                }
+            },
+            "required": ["name"]
+        },
+        "condition": {
+            "description": "TODO",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": [ "condition" ]
+                },
+                "additional": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "description": "Readonly.",
+                            "enum": [ "boolean", "regex", "date", "fragment", "lexicon", "not", "number", "string", "exists", "text" ]
+                        },
+                        "is_fragment": {
+                            "type": "boolean"
+                        },
+                        "order": {
+                            "type": "number"
+                        },
+                        "notes": {
+                            "type": "string"
+                        },
+                        "target": {
+                            "type": "object"
+                        },
+                        "include_descendants": {
+                            "type": "boolean"
+                        }
+                    },
+                    "required": ["type"],
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/boolean_condition"
+                        },
+                        {
+                            "$ref": "#/definitions/regex_condition"
+                        },
+                        {
+                            "$ref": "#/definitions/date_condition"
+                        },
+                        {
+                            "$ref": "#/definitions/exists_condition"
+                        },
+                        {
+                            "$ref": "#/definitions/fragment_condition"
+                        },
+                        {
+                            "$ref": "#/definitions/lexicon_condition"
+                        },
+                        {
+                            "$ref": "#/definitions/not_condition"
+                        },
+                        {
+                            "$ref": "#/definitions/number_condition"
+                        },
+                        {
+                            "$ref": "#/definitions/string_condition"
+                        },
+                        {
+                            "$ref": "#/definitions/text_condition"
+                        }
+                    ]
+                }
+            },
+            "required": ["additional"]
+        },
+        "boolean_condition": {
+            "description": "Boolean condition",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": [ "boolean" ]
+                },
+                "operator": {
+                    "description": "boolean operator; AND or OR",
+                    "type": "string",
+                    "enum": [
+                        "and",
+                        "or"
+                    ]
+                },
+                "children": {
+                    "description": "Conditions the boolean applies to",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/condition"
+                    }
+                }
+            },
+            "required": ["operator"]
+        },
+        "regex_condition": {
+            "description": "Regex condition",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": [ "regex" ]
+                },
+                "field": {
+                    "$ref": "#/definitions/field"
+                },
+                "value": {
+                    "description": "Value of condition",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "language": {
+                    "description": "language of condition",
+                    "type": "string"
+                }
+            },
+            "required": ["field", "value"]
+        },
+        "date_condition": {
+            "description": "date condition",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": [ "date" ]
+                },
+                "field": {
+                    "$ref": "#/definitions/field"
+                },
+                "value": {
+                    "description": "Date as string",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "operator": {
+                    "enum": ["before", "after", "on"]
+                }
+            },
+            "required": ["field", "value", "operator"]
+        },
+        "exists_condition": {
+            "description": "Exists condition",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": [ "exists" ]
+                },
+                "field": {
+                    "$ref": "#/definitions/field"
+                }
+            },
+            "required": ["field"]
+        },
+        "fragment_condition": {
+            "description": "fragment condition",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": [ "fragment" ]
+                },
+                "value": {
+                    "type": "number",
+                    "multipleOf": 1.0
+                }
+            },
+            "required": ["value"]
+        },
+        "lexicon_condition": {
+            "description": "lexicon condition",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": [ "lexicon" ]
+                },
+                "field": {
+                    "$ref": "#/definitions/field"
+                },
+                "value": {
+                    "type": "number",
+                    "multipleOf": 1.0
+                }
+            },
+            "required": ["field", "value"]
+        },
+        "not_condition": {
+            "description": "Not condition",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": [ "not" ]
+                },
+                "condition": {
+                    "$ref": "#/definitions/condition"
+                }
+            }
+        },
+        "number_condition": {
+            "description": "number condition",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": [ "number" ]
+                },
+                "field": {
+                    "$ref": "#/definitions/field"
+                },
+                "value": {
+                    "description": "number",
+                    "type": "number",
+                    "multipleOf": 1.0
+                },
+                "operator": {
+                    "enum": ["gt", "lt", "eq"]
+                }
+            },
+            "required": ["field", "value", "operator"]
+        },
+        "string_condition": {
+            "description": "String condition",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": [ "string" ]
+                },
+                "field": {
+                    "$ref": "#/definitions/field"
+                },
+                "value": {
+                    "description": "value of string",
+                    "type": "string"
+                },
+                "operator": {
+                    "enum": ["is", "starts_with", "ends_with"]
+                }
+            },
+            "required": ["field", "value", "operator"]
+        },
+        "text_condition": {
+            "description": "Text condition",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": [ "text" ]
+                },
+                "field": {
+                    "$ref": "#/definitions/field"
+                },
+                "value": {
+                    "description": "value of text",
+                    "type": "string"
+                },
+                "language": {
+                    "description": "Language of text",
+                    "type": "string"
+                }
+            },
+            "required": ["field", "value"]
+        },
+        "field": {
+            "description": "Field of condition",
+            "type": "string",
+            "minLength": 1
+        },
+        "lexicon": {
+            "description": "Lexicon object",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": ["lexicon"]
+                },
+                "additional": {
+                    "type": "object",
+                    "properties": {
+                        "lexicon_expressions": {
+                            "description": "Expressions of lexicon",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/lexicon_expression"
+                            }
+                        }
+                    }
+                }
+            },
+            "required": ["name"]
+        },
+        "lexicon_expression": {
+            "description": "Lexicon expression",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": ["lexicon_expression"]
+                },
+                "additional": {
+                    "type": "object",
+                    "properties": {
+                        "lexicon_id": {
+                            "description": "Id of lexicon it refers to",
+                            "type": "number",
+                            "multipleOf": 1.0
+                        },
+                        "type": {
+                            "enum": ["regex", "text"]
+                        },
+                        "expression": {
+                            "description": "expression",
+                            "type": "string",
+                            "minLength": 1
+                        }
+                    },
+                    "required": ["lexicon_id", "type", "expression"]
+                }
+            }
+        }
+    }
+}
