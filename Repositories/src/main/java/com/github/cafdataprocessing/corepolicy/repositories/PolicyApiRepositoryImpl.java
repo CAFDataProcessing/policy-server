@@ -94,7 +94,6 @@ public class PolicyApiRepositoryImpl implements PolicyApi {
             PolicyType policyType = retrievePolicyType(t.typeId);
 
             if (policyType == null) {
-                //todo PD-648
                 throw new RuntimeException("PolicyType: " + t.name + " by id: " + t.typeId + " does not exist.");
             }
 
