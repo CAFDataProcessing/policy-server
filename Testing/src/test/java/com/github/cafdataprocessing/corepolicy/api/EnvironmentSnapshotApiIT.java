@@ -106,7 +106,11 @@ public class EnvironmentSnapshotApiIT extends IntegrationTestBase {
             MetadataPolicyA
             Metadata Policy Type
         */
-
+        com.github.cafdataprocessing.corepolicy.testing.Assume.assumeTrue(
+                com.github.cafdataprocessing.corepolicy.testing.Assume.AssumeReason.BUG,
+                "testCorrectEnvironmentReturned", "CAF-2876", "Date is not timezone aware so test may fail when core policy environment " +
+                        "is a different timezone than environment tests are ran.",
+                false, genericApplicationContext);
 
 
         initializeTest();
