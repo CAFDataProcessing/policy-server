@@ -81,12 +81,14 @@ public class VersionNumberTest {
     @Test(expected = Exception.class)
     public void testLowerMinorVersionThrows() throws Exception
     {
-        ReleaseHistory version = new ReleaseHistory(VersionNumber.getCurrentVersion());
+        String supportedDatabaseVersionStr =
+                Resources.toString(VersionNumber.class.getResource("/supported-database-version"), Charsets.UTF_8);
+        ReleaseHistory supportedDatabaseVersion = new ReleaseHistory(supportedDatabaseVersionStr);
 
-        // Now bump up the major version by 1.
-        version.minorVersion-=1;
+        // Now reduce the major version by 1.
+        supportedDatabaseVersion.minorVersion-=1;
 
-        VersionNumber.isSupportedVersion(version);
+        VersionNumber.isSupportedVersion(supportedDatabaseVersion);
     }
 
     @Test(expected = Exception.class)
@@ -98,7 +100,7 @@ public class VersionNumberTest {
                 Resources.toString(VersionNumber.class.getResource("/supported-database-version"), Charsets.UTF_8);
         ReleaseHistory version = new ReleaseHistory(supportedDatabaseVersionStr);
 
-        // Now lower the revision version by 1.
+        // Now reduce the revision version by 1.
         version.revision-=1;
 
         VersionNumber.isSupportedVersion(version);
