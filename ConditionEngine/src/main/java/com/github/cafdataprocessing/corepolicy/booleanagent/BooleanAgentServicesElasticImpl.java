@@ -33,6 +33,7 @@ import org.elasticsearch.action.admin.indices.validate.query.ValidateQueryReques
 import org.elasticsearch.action.admin.indices.validate.query.ValidateQueryResponse;
 import org.elasticsearch.action.percolate.PercolateResponse;
 import org.elasticsearch.action.percolate.PercolateSourceBuilder;
+import org.elasticsearch.action.support.WriteRequest;
 import org.elasticsearch.action.termvectors.TermVectorsResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
@@ -51,6 +52,7 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.highlight.HighlightBuilder;
 import org.elasticsearch.search.highlight.HighlightField;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -200,7 +202,11 @@ public final class BooleanAgentServicesElasticImpl extends BooleanAgentServicesB
                 initialize();
 
                 ValidateQueryRequest validationRequest = new ValidateQueryRequest(policyIndexName)
-                        .source(query);
+                        //TODO source(QuerySourceBuilder), source(Map), source(XContentBuilder), source(String),
+                        // source(byte[]), source(byte[], int, int), source(BytesReference) and source()
+                        // have been removed in favor of using query(QueryBuilder) and query()
+                        //.source(query);
+                    .query(query);
                 validationRequest.explain(true);
 
                 ValidateQueryResponse validationResponse = getElasticClient()
@@ -443,14 +449,12 @@ public final class BooleanAgentServicesElasticImpl extends BooleanAgentServicesB
 
     private Client getElasticClient() throws UnknownHostException {
         if (this.elasticClient == null) {
-            Settings settings = Settings.settingsBuilder()
+            Settings settings = Settings.builder()
                     .put("cluster.name", elasticsearchProperties.getElasticsearchClusterName())
                     .put("client.transport.ping_timeout", elasticsearchProperties.getElasticsearchTransportPingTimeout())
                     .build();
 
-            this.elasticClient = TransportClient.builder()
-                    .settings(settings)
-                    .build()
+            this.elasticClient = new PreBuiltTransportClient(settings)
                     .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(elasticsearchProperties.getElasticsearchHost()), elasticsearchProperties.getElasticsearchPort()));
         }
 
@@ -472,7 +476,7 @@ public final class BooleanAgentServicesElasticImpl extends BooleanAgentServicesB
         getElasticClient()
                 .prepareIndex(policyIndexName, percolatorTypeName, reference)
                 .setSource(storedQuery)
-                .setRefresh(true)
+                .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)
                 .setTTL(ttl)
                 .get(elasticsearchProperties.getElasticsearchSearchTimeout());
     }
