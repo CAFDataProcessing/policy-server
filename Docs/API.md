@@ -70,7 +70,7 @@ submit.
     }
 
 
-##Request
+## Request
 
 #### Input source
 This API accepts a single input source that can be supplied using one of the following parameters:
@@ -113,11 +113,11 @@ In addition to the above input source, this API accepts the following parameters
 
 *Required parameters are shown with names in bold.*
 
-##Response
+## Response
 This API returns a JSON response that is described by the model below. This single model is presented both as an easy to read abstract 
 definition and as the formal JSON schema.
 
-#####Model
+##### Model
 
 This is an abstract definition of the response that describes each of the properties that might be returned.
 
@@ -134,7 +134,7 @@ and any conditions that were unable to be evaluated.
 **}**
 
 
-#####Model Schema
+##### Model Schema
 This is a JSON schema that describes the syntax of the response. See json-schema.org for a complete reference.
 
 <pre><code>
@@ -746,7 +746,7 @@ This API accepts the following parameters:
 </table>
 *Required parameters are shown with names in bold.*
 
-####Enumeration Types
+#### Enumeration Types
 This API's parameters use the enumerations described below:
 
 <table>
@@ -775,11 +775,11 @@ This API's parameters use the enumerations described below:
     </tr>
 </table>
 
-##Response
+## Response
 This API returns a JSON response that is described by the model below. This single model is presented both as an easy to read 
 abstract definition and as the formal JSON schema.
 
-#####Model
+##### Model
 This is an abstract definition of the response that describes each of the properties that might be returned.
 
 
@@ -795,7 +795,7 @@ This is an abstract definition of the response that describes each of the proper
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'collection_sequence', 'collection', 'condition', 'lexicon', 'lexicon_expression'  
 **}**
 
-#####Model Schema 
+##### Model Schema 
 This is a JSON schema that describes the syntax of the response. See json-schema.org for a complete reference.
 
 <pre><code>
@@ -1445,7 +1445,7 @@ resolving policy conflicts. It can have one of two values:
 
 or it can be null, with null implying priority mode.
 
-##Request
+## Request
 
 #### Parameters
 This API accepts the following parameters:
@@ -1479,7 +1479,7 @@ This API accepts the following parameters:
 </table>
 *Required parameters are shown with names in bold.*
 
-####Enumeration Types
+#### Enumeration Types
 This API's parameters use the enumerations described below:
 
 <table>
@@ -1496,11 +1496,11 @@ This API's parameters use the enumerations described below:
     </tr>
 </table>
 
-##Response
+## Response
 This API returns a JSON response that is described by the model below. This single model is presented both as an easy to read 
 abstract definition and as the formal JSON schema.
 
-#####Model
+##### Model
 This is an abstract definition of the response that describes each of the properties that might be returned.
 
 
@@ -1516,7 +1516,7 @@ This is an abstract definition of the response that describes each of the proper
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'policy', 'policy_type'  
 **}**
 
-#####Model Schema 
+##### Model Schema 
 This is a JSON schema that describes the syntax of the response. See json-schema.org for a complete reference.
 
 <pre><code>
@@ -1585,7 +1585,7 @@ The following classification object types can be deleted:
 A collection cannot be deleted if it is used in a collection sequence. A
 lexicon cannot be deleted if it is used in a condition.
 
-##Request
+## Request
 
 #### Parameters
 This API accepts the following parameters:
@@ -1610,7 +1610,7 @@ This API accepts the following parameters:
 
 *Required parameters are shown with names in bold.*
 
-####Enumeration Types
+#### Enumeration Types
 This API's parameters use the enumerations described below:
 
 <table>
@@ -1639,11 +1639,11 @@ This API's parameters use the enumerations described below:
     </tr>
 </table>
 
-##Response
+## Response
 This API returns a JSON response that is described by the model below. This single model is presented both as an easy to read 
 abstract definition and as the formal JSON schema.
 
-#####Model
+##### Model
 This is an abstract definition of the response that describes each of the properties that might be returned.
 
 **Delete Classification Response {**  
@@ -1656,7 +1656,7 @@ This is an abstract definition of the response that describes each of the proper
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>error_message</b> ( string or null , *optional*)  
 **}**
 
-#####Model Schema 
+##### Model Schema 
 This is a JSON schema that describes the syntax of the response. See json-schema.org for a complete reference.
 
 <pre><code>
@@ -1731,7 +1731,7 @@ The following policy object types can be deleted:
 The **id** parameter identifies the policy object to be deleted. A
 single id or array of ids can be specified.
 
-##Request
+## Request
 
 #### Parameters
 This API accepts the following parameters:
@@ -1756,7 +1756,7 @@ This API accepts the following parameters:
 
 *Required parameters are shown with names in bold.*
 
-####Enumeration Types
+#### Enumeration Types
 This API's parameters use the enumerations described below:
 
 <table>
@@ -1773,11 +1773,11 @@ This API's parameters use the enumerations described below:
     </tr>
 </table>
 
-##Response
+## Response
 This API returns a JSON response that is described by the model below. This single model is presented both as an easy to read 
 abstract definition and as the formal JSON schema.
 
-#####Model
+##### Model
 This is an abstract definition of the response that describes each of the properties that might be returned.
 
 **Delete Policy Response {**  
@@ -1790,7 +1790,7 @@ This is an abstract definition of the response that describes each of the proper
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>error_message</b> ( string or null , optional)  
 **}**
 
-#####Model Schema 
+##### Model Schema 
 This is a JSON schema that describes the syntax of the response. See json-schema.org for a complete reference.
 
 <pre><code>
@@ -2018,7 +2018,7 @@ format:
     }
 
 
-##Request
+## Request
 
 #### Parameters
 This API accepts the following parameters:
@@ -2058,7 +2058,7 @@ This API accepts the following parameters:
 </table>
 *Required parameters are shown with names in bold.*
 
-####Enumeration Types
+#### Enumeration Types
 This API's parameters use the enumerations described below:
 
 <table>
@@ -2087,11 +2087,11 @@ This API's parameters use the enumerations described below:
     </tr>
 </table>
 
-##Response
+## Response
 This API returns a JSON response that is described by the model below. This single model is presented both as an easy to read 
 abstract definition and as the formal JSON schema.
 
-#####Model
+##### Model
 This is an abstract definition of the response that describes each of the properties that might be returned.
 
 **Create Classification Response {**  
@@ -2109,7 +2109,7 @@ This is an abstract definition of the response that describes each of the proper
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'collection_sequence', 'collection', 'condition', 'lexicon', 'lexicon_expression'  
 **}**
 
-#####Model Schema 
+##### Model Schema 
 This is a JSON schema that describes the syntax of the response. See json-schema.org for a complete reference.
 
 <pre><code>
@@ -2782,7 +2782,7 @@ Objects of type **policy\_type** are returned in the following format:
     }
 
 
-##Request
+## Request
 
 #### Parameters
 This API accepts the following parameters:
@@ -2822,7 +2822,7 @@ This API accepts the following parameters:
 </table>
 *Required parameters are shown with names in bold.*
 
-####Enumeration Types
+#### Enumeration Types
 This API's parameters use the enumerations described below:
 
 <table>
@@ -2839,11 +2839,11 @@ This API's parameters use the enumerations described below:
     </tr>
 </table>
 
-##Response
+## Response
 This API returns a JSON response that is described by the model below. This single model is presented both as an easy to read 
 abstract definition and as the formal JSON schema.
 
-#####Model
+##### Model
 This is an abstract definition of the response that describes each of the properties that might be returned.
 
 **Create Policy Response {**  
@@ -2861,7 +2861,7 @@ This is an abstract definition of the response that describes each of the proper
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'policy_type', 'policy'    
 **}**
 
-#####Model Schema 
+##### Model Schema 
 This is a JSON schema that describes the syntax of the response. See json-schema.org for a complete reference.
 
 <pre><code>
@@ -3452,7 +3452,7 @@ The **expression** field contains the expression to add to the lexicon.
 It can be a term, phrase or proximity expression for text type or a
 regular expression for regex type.
 
-##Request
+## Request
 
 #### Parameters
 This API accepts the following parameters:
@@ -3491,7 +3491,7 @@ This API accepts the following parameters:
 </table>
 *Required parameters are shown with names in bold.*
 
-####Enumeration Types
+#### Enumeration Types
 This API's parameters use the enumerations described below:
 
 <table>
@@ -3520,11 +3520,11 @@ This API's parameters use the enumerations described below:
     </tr>
 </table>
 
-##Response
+## Response
 This API returns a JSON response that is described by the model below. This single model is presented both as an easy to read 
 abstract definition and as the formal JSON schema.
 
-#####Model
+##### Model
 This is an abstract definition of the response that describes each of the properties that might be returned.
 
 
@@ -3540,7 +3540,7 @@ This is an abstract definition of the response that describes each of the proper
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'collection_sequence', 'collection', 'condition', 'lexicon', 'lexicon_expression'  
 **}**
 
-#####Model Schema 
+##### Model Schema 
 This is a JSON schema that describes the syntax of the response. See json-schema.org for a complete reference.
 
 <pre><code>
@@ -4170,7 +4170,7 @@ type is:
     }
 
 
-##Request
+## Request
 
 #### Parameters
 This API accepts the following parameters:
@@ -4209,7 +4209,7 @@ This API accepts the following parameters:
 </table>
 *Required parameters are shown with names in bold.*
 
-####Enumeration Types
+#### Enumeration Types
 This API's parameters use the enumerations described below:
 
 <table>
@@ -4226,11 +4226,11 @@ This API's parameters use the enumerations described below:
     </tr>
 </table>
 
-##Response
+## Response
 This API returns a JSON response that is described by the model below. This single model is presented both as an easy to read 
 abstract definition and as the formal JSON schema.
 
-#####Model
+##### Model
 This is an abstract definition of the response that describes each of the properties that might be returned.
 
 **Create Policy Response {**  
@@ -4246,7 +4246,7 @@ This is an abstract definition of the response that describes each of the proper
 **}**
 
 
-#####Model Schema 
+##### Model Schema 
 This is a JSON schema that describes the syntax of the response. See json-schema.org for a complete reference.
 
 <pre><code>
@@ -4300,7 +4300,7 @@ Here is an example of the **additional** JSON format:
     
 Programmatically you would call WorkflowApi.create(SequenceWorkflow newWorkflow). This returns the created SequenceWorkflow.
 
-##Update Workflow
+## Update Workflow
 
 To update a Workflow object you must specify the **id** of the sequenceWorkflow you wish to update and supply additional parameters in **additional** 
 You can also supply a **description** if you wish to also update that. 
@@ -4324,7 +4324,7 @@ Here is an example of the **additional** JSON format:
     
 Programmatically you would call WorkflowApi.update(SequenceWorkflow updatedWorkflow). This returns the updated SequenceWorkflow.
 
-##Delete Workflow
+## Delete Workflow
 
 To delete a Workflow object you must specify the **id** of the sequenceWorkflow you wish to delete.
 
@@ -4333,7 +4333,7 @@ For example:
 
 Programmatically you would call WorkflowApi.delete(Long id). 
 
-##Retrieve Workflow
+## Retrieve Workflow
 
 To retrieve a Workflow object you must specify the **id** of the sequenceWorkflow you wish to retrieve.
 
@@ -4369,7 +4369,7 @@ This will return the following JSON format:
     
 Programmatically you would call WorkflowApi.retrieve(Long id). This returns the SequenceWorkflow with that ID.
 
-##Retrieve Workflow Entries
+## Retrieve Workflow Entries
 
 To retrieve a paged list of Workflow Entries you must specify the **id** of the SequenceWorkflow they belong to in **filter** object.
 
@@ -4477,7 +4477,7 @@ This will return the following JSON format:
 }
 </code></pre>
 
-##Filtering
+## Filtering
 You can filter the Policy objects returned from the request by adding the `filter` property to the request. The `filter` is a JSON object that specifies the property name you wish to filter by and the value to use. For certain Workflow objects you can also filter using properties on their child objects using the following syntax  `child_object.propertyname`
 
 For example:
