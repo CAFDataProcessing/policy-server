@@ -188,9 +188,9 @@ format:
     }
 
 
-##Request
+## Request
 
-####Authentication
+#### Authentication
 This API requires an authentication token to be supplied in the following parameter:
 
 <table>
@@ -242,7 +242,7 @@ This API accepts the following parameters:
 </table>
 *Required parameters are shown with names in bold.*
 
-####Enumeration Types
+#### Enumeration Types
 This API's parameters use the enumerations described below:
 
 <table>
@@ -271,11 +271,11 @@ This API's parameters use the enumerations described below:
     </tr>
 </table>
 
-##Response
+## Response
 This API returns a JSON response that is described by the model below. This single model is presented both as an easy to read 
 abstract definition and as the formal JSON schema.
 
-#####Model
+##### Model
 This is an abstract definition of the response that describes each of the properties that might be returned.
 
 **Create Classification Response {**  
@@ -293,7 +293,7 @@ This is an abstract definition of the response that describes each of the proper
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'collection_sequence', 'collection', 'condition', 'lexicon', 'lexicon_expression'  
 **}**
 
-#####Model Schema 
+##### Model Schema 
 This is a JSON schema that describes the syntax of the response. See json-schema.org for a complete reference.
 
 <pre><code>
@@ -857,7 +857,7 @@ This is a JSON schema that describes the syntax of the response. See json-schema
 }
 </code></pre>
 
-##Filtering 
+## Filtering 
 
 You can filter the Classification objects returned from the request by adding the `filter` property to the request. The `filter` is a JSON object that specifies the property name you wish to filter by and the value to use. For certain classification objects you can also filter using properties on their child objects using the following syntax  `child_object.propertyname`
 
@@ -962,7 +962,7 @@ This returns the following JSON format:
 }
 </code></pre>
 
-##Sorting
+## Sorting
 
 You can override the default ordering of the retrieved items by passing the **sort** property into the request. Similar to the **filter** property, the sort specifies the field to sort on and a boolean
 specifying ascending (true) or descending (false). Sorting can be used in combination with filtering.
