@@ -39,9 +39,9 @@ The following classification object types can be deleted:
 A collection cannot be deleted if it is used in a collection sequence. A
 lexicon cannot be deleted if it is used in a condition.
 
-##Request
+## Request
 
-####Authentication
+#### Authentication
 This API requires an authentication token to be supplied in the following parameter:
 
 <table>
@@ -78,7 +78,7 @@ This API accepts the following parameters:
 
 *Required parameters are shown with names in bold.*
 
-####Enumeration Types
+#### Enumeration Types
 This API's parameters use the enumerations described below:
 
 <table>
@@ -107,11 +107,11 @@ This API's parameters use the enumerations described below:
     </tr>
 </table>
 
-##Response
+## Response
 This API returns a JSON response that is described by the model below. This single model is presented both as an easy to read 
 abstract definition and as the formal JSON schema.
 
-#####Model
+##### Model
 This is an abstract definition of the response that describes each of the properties that might be returned.
 
 **Delete Classification Response {**  
@@ -124,7 +124,7 @@ This is an abstract definition of the response that describes each of the proper
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>error_message</b> ( string or null , *optional*)  
 **}**
 
-#####Model Schema 
+##### Model Schema 
 This is a JSON schema that describes the syntax of the response. See json-schema.org for a complete reference.
 
 <pre><code>
