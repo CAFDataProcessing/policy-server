@@ -712,7 +712,7 @@ The **expression** field contains the expression to add to the lexicon.
 It can be a term, phrase or proximity expression for text type or a
 regular expression for regex type.
 
-##Request
+## Request
 
 #### Parameters
 This API accepts the following parameters:
