@@ -1,4 +1,4 @@
-#Workflow API
+# Workflow API
 
 The Workflow API provide the user a way to conditionally control the flow of their documents to various CAF Workers.
 
@@ -41,9 +41,9 @@ ordered by their values, from lowest to highest.  If no order value is specified
 The **collection\_sequence\_id** field identifies the collections sequence that is being
 added to the sequence workflow. 
 
-##Request
+## Request
 
-####Authentication
+#### Authentication
 This API requires an authentication token to be supplied in the following parameter:
 
 <table>
@@ -95,7 +95,7 @@ This API accepts the following parameters:
 
 *Required parameters are shown with names in bold.*
 
-####Enumeration Types
+#### Enumeration Types
 This API's parameters use the enumerations described below:
 
 <table>
