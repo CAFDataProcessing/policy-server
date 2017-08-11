@@ -70,9 +70,9 @@ submit.
     }
 
 
-##Request
+## Request
 
-####Authentication
+#### Authentication
 This API requires an authentication token to be supplied in the following parameter:
 
 <table>
@@ -127,11 +127,11 @@ In addition to the above input source, this API accepts the following parameters
 
 *Required parameters are shown with names in bold.*
 
-##Response
+## Response
 This API returns a JSON response that is described by the model below. This single model is presented both as an easy to read abstract 
 definition and as the formal JSON schema.
 
-#####Model
+##### Model
 
 This is an abstract definition of the response that describes each of the properties that might be returned.
 
@@ -148,7 +148,7 @@ and any conditions that were unable to be evaluated.
 **}**
 
 
-#####Model Schema
+##### Model Schema
 This is a JSON schema that describes the syntax of the response. See json-schema.org for a complete reference.
 
 <pre><code>
