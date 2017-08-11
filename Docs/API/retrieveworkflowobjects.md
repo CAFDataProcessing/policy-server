@@ -1,9 +1,9 @@
-#Workflow API
+# Workflow API
 The Workflow API provide the user a way to conditionally control the flow of their documents to various CAF Workers.
 
 This document shows how requests can be made both through the web service and programmatically. 
 
-##Retrieve Sequence Workflow
+## Retrieve Sequence Workflow
 
 
 The following classification object types can be retrieved:
@@ -74,7 +74,7 @@ This will return the following JSON format:
 }
 </code></pre>
 
-##Filtering
+## Filtering
 You can filter the Policy objects returned from the request by adding the `filter` property to the request. The `filter` is a JSON object that specifies the property name you wish to filter by and the value to use. For certain Workflow objects you can also filter using properties on their child objects using the following syntax  `child_object.propertyname`
 
 For example:
