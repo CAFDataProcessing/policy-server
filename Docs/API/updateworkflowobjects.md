@@ -1,9 +1,9 @@
-#Workflow API
+# Workflow API
 The Workflow API provide the user a way to conditionally control the flow of their documents to various CAF Workers.
 
 This document shows how requests can be made both through the web service and programmatically. 
 
-##Update Workflow
+## Update Workflow
 
 To update a Workflow object you must specify the **id** of the sequenceWorkflow you wish to update and supply additional parameters in **additional**.   
 You can also supply a **description** if you wish to also update that. 
@@ -25,11 +25,11 @@ Here is an example of the **additional** JSON format:
         "notes":null
     }
 
-##Response
+## Response
 This API returns a JSON response that is described by the model below. This single model is presented both as an easy to read 
 abstract definition and as the formal JSON schema.
 
-#####Model
+##### Model
 This is an abstract definition of the response that describes each of the properties that might be returned.
 
 **Create Sequence Workflow Response {**  
@@ -45,7 +45,7 @@ This is an abstract definition of the response that describes each of the proper
 **}**
 
 
-#####Model Schema 
+##### Model Schema 
 This is a JSON schema that describes the syntax of the response. See json-schema.org for a complete reference.
 
 <pre><code>
