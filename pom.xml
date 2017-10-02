@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2015-2017 Hewlett Packard Enterprise Development LP.
+    Copyright 2015-2017 EntIT Software LLC, a Micro Focus company.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -50,6 +50,11 @@
         <module>DatabaseScriptGeneration</module>
         <module>PolicyServerElasticsearchContainer</module>
     </modules>
+    
+    <organization>
+        <name>EntIT Software LLC, a Micro Focus company</name>
+        <url>https://www.microfocus.com</url>
+    </organization>
 
     <licenses>
         <license>
@@ -263,7 +268,7 @@
             
 
             <!-- N.B. Our default position it to upload to maven during depoy phase,
-                if you dont want this to happen, skip this plugin in your pom e.g. Testing pom. -->
+            if you dont want this to happen, skip this plugin in your pom e.g. Testing pom. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
