@@ -74,7 +74,7 @@ should_start_elasticsearch() {
 start_elasticsearch() {
     /opt/elasticsearchConfig/configureElasticsearch.sh
     echo "Attempting to start Elasticsearch ..."
-    /opt/elasticsearch/bin/elasticsearch -Des.insecure.allow.root=true
+    /opt/elasticsearch/bin/elasticsearch -Des.insecure.allow.root=true -d
     if [ -n "$POLICY_ELASTICSEARCH_VERIFY_ATTEMPTS" ];
     then
       remainingChecks=$POLICY_ELASTICSEARCH_VERIFY_ATTEMPTS
@@ -83,7 +83,7 @@ start_elasticsearch() {
     fi
     while [ "$remainingChecks" -ne "0" ]
     do
-        if service elasticsearch status | grep -q "elasticsearch is running" && curl --silent http://localhost:9200/_cluster/health | grep -q 'cluster_name';
+        if curl --silent http://localhost:9200/_cluster/health | grep -q 'cluster_name';
         then
             echo "Elasticsearch started."
             remainingChecks=0
