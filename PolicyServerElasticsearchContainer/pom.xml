@@ -35,14 +35,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.krallin</groupId>
-            <artifactId>tini</artifactId>
-            <version>${tini.version}</version>
-            <scope>runtime</scope>
-            <type>exe</type>
-        </dependency>
-
-        <dependency>
             <groupId>com.github.cafdataprocessing</groupId>
             <artifactId>corepolicy-web</artifactId>
             <version>${project.parent.version}</version>
@@ -160,7 +152,7 @@
     <properties>
         <fileSet.outputDirectory>startup</fileSet.outputDirectory>
 
-        <container.policyelasticsearchbase.name>cafdataprocessing/policy-elasticsearch-container:1.1</container.policyelasticsearchbase.name>
+        <container.policyelasticsearchbase.name>cafinternal/prereleases:policy-elasticsearch-container-1.2.0-CAF-3862-SNAPSHOT</container.policyelasticsearchbase.name>
         <container.policyserver.name>cafinternal/prereleases:policy-admin-elasticsearch-${project.version}</container.policyserver.name>
         <container.integration.tests.basedir>/opt/integration-tests</container.integration.tests.basedir>
         <container.caf.configs.directory>configs</container.caf.configs.directory>
@@ -369,7 +361,7 @@
                             <alias>integrationtests-corepolicy-dbinstaller</alias>
                             <name>policy/integrationtests/dbinstaller</name>
                             <build>
-                                <from>java:8</from>
+                                <from>cafapi/opensuse-jre8:1.2</from>
                                 <tags>
                                     <tag>built-as-part-of-${project.parent.artifactId}-latest</tag>
                                     <tag>temporary-item-please-remove</tag>
@@ -433,13 +425,6 @@
                                     <CATALINA_HOME>/opt/tomcat</CATALINA_HOME>
                                     <PATH>$PATH:$CATALINA_HOME/bin</PATH>
                                 </env>
-                                <!-- Run application through tini -->
-                                <entryPoint>
-                                    <exec>
-                                        <args>/opt/tini-${tini.version}.exe</args>
-                                        <args>--</args>
-                                    </exec>
-                                </entryPoint>
                                 <runCmds>
                                     <runCmd>mv /opt/${fileSet.outputDirectory}/apache-tomcat-* /opt/tomcat</runCmd>
                                     <runCmd>mkdir /var/corepolicy</runCmd>
@@ -468,13 +453,6 @@
                                                 </includes>
                                                 <outputDirectory>${fileSet.outputDirectory}</outputDirectory>
                                                 <outputFileNameMapping>corepolicy.war</outputFileNameMapping>
-                                            </dependencySet>
-                                            <dependencySet>
-                                                <useProjectArtifact>false</useProjectArtifact>
-                                                <fileMode>0755</fileMode>
-                                                <includes>
-                                                    <include>com.github.krallin:tini</include>
-                                                </includes>
                                             </dependencySet>
                                         </dependencySets>
                                         <files>
