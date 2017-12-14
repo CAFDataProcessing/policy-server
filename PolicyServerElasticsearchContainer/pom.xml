@@ -152,7 +152,7 @@
     <properties>
         <fileSet.outputDirectory>startup</fileSet.outputDirectory>
 
-        <container.policyelasticsearchbase.name>cafinternal/prereleases:policy-elasticsearch-container-1.2.0-CAF-3862-SNAPSHOT</container.policyelasticsearchbase.name>
+        <container.policyelasticsearchbase.name>cafinternal/prereleases:policy-elasticsearch-container-2.0.0-CAF-3862-SNAPSHOT</container.policyelasticsearchbase.name>
         <container.policyserver.name>cafinternal/prereleases:policy-admin-elasticsearch-${project.version}</container.policyserver.name>
         <container.integration.tests.basedir>/opt/integration-tests</container.integration.tests.basedir>
         <container.caf.configs.directory>configs</container.caf.configs.directory>
