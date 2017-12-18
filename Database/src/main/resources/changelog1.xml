@@ -780,5 +780,26 @@
             <column name="revision" type="SMALLINT(5)" value="0"/>
         </insert>
     </changeSet>
+    
+    <changeSet author="CAF" id="1512411132000-1">
+        <insert tableName="tbl_policy_type">
+            <column name="item_name" value="Chained Action Type"/>
+            <column name="description" value="Used in chaining of documents during enrichment."/>
+            <column name="definition" value="{&quot;title&quot;: &quot;Chained Action Policy Type&quot;,&quot;description&quot;: &quot;Integrate with Workflow Worker to allow chaining of Document Worker actions.  Document Workers can add extra fields to a document, and can also update or remove fields.&quot;,&quot;type&quot;: &quot;object&quot;,&quot;properties&quot;: {&quot;workerName&quot;: {&quot;description&quot;: &quot;The name of the worker. Some configuration details, such as the default queue names, will be looked up based on this name.&quot;,&quot;type&quot;: &quot;string&quot;},&quot;queueName&quot;: {&quot;description&quot;: &quot;Optional. Typically the target queue name is provided via configuration. This field can be used as a means to override the queue name specified in the configuration.&quot;,&quot;type&quot;: &quot;string&quot;},&quot;diagnosticsQueueName&quot;: {&quot;description&quot;: &quot;Optional. Allows a second 'diagnostic' queue to be specified for the worker. This will be used if the worker fails.&quot;,&quot;type&quot;: &quot;string&quot;},&quot;customData&quot;: {&quot;description&quot;: &quot;Optional. Used to send additional worker-specific data to the worker.&quot;,&quot;type&quot;: &quot;object&quot;}}}"/>
+            <column name="internal_name" value="ChainedActionType"/>
+            <column name="conflict_resolution_mode" value="PRIORITY"/>
+            <column name="project_id"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="CAF" id="1512411132000-2">
+        <insert tableName="tbl_release_history">
+            <column name="release" value="conditionEngine 1.0"/>
+            <column name="date_stamp" valueComputed="now()"/>
+            <column name="major_version" type="SMALLINT(5)" value="1"/>
+            <column name="minor_version" type="SMALLINT(5)" value="1"/>
+            <column name="revision" type="SMALLINT(5)" value="0"/>
+        </insert>
+    </changeSet>
 
 </databaseChangeLog>
