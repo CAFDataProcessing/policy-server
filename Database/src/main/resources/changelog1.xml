@@ -792,14 +792,4 @@
         </insert>
     </changeSet>
 
-    <changeSet author="CAF" id="1512411132000-2">
-        <insert tableName="tbl_release_history">
-            <column name="release" value="conditionEngine 1.0"/>
-            <column name="date_stamp" valueComputed="now()"/>
-            <column name="major_version" type="SMALLINT(5)" value="1"/>
-            <column name="minor_version" type="SMALLINT(5)" value="1"/>
-            <column name="revision" type="SMALLINT(5)" value="0"/>
-        </insert>
-    </changeSet>
-
 </databaseChangeLog>
