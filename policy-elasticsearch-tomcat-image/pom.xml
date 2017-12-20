@@ -30,7 +30,7 @@
 
     <artifactId>policy-elasticsearch-tomcat-image</artifactId>
     <name>Policy Elasticsearch Tomcat Image</name>
-    <description>A base image for building a Web project.</description>
+    <description>A base image for the policy server container that has Tomcat and Elasticsearch installed.</description>
     <packaging>pom</packaging>
     
     <properties>
