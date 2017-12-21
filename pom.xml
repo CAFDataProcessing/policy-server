@@ -48,6 +48,7 @@
         <module>Hibernate</module>
         <module>MultimapUtils</module>
         <module>DatabaseScriptGeneration</module>
+        <module>policy-elasticsearch-tomcat-image</module>
         <module>PolicyServerElasticsearchContainer</module>
     </modules>
     

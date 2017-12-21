@@ -74,7 +74,7 @@ should_start_elasticsearch() {
 start_elasticsearch() {
     /opt/elasticsearchConfig/configureElasticsearch.sh
     echo "Attempting to start Elasticsearch ..."
-    /etc/init.d/elasticsearch start
+    /opt/elasticsearch/scripts/start.sh |& sed -ue 's/^/Elasticsearch: /' &
     if [ -n "$POLICY_ELASTICSEARCH_VERIFY_ATTEMPTS" ];
     then
       remainingChecks=$POLICY_ELASTICSEARCH_VERIFY_ATTEMPTS
@@ -83,7 +83,7 @@ start_elasticsearch() {
     fi
     while [ "$remainingChecks" -ne "0" ]
     do
-        if service elasticsearch status | grep -q "elasticsearch is running" && curl --silent http://localhost:9200/_cluster/health | grep -q 'cluster_name';
+        if curl --silent http://localhost:9200/_cluster/health | grep -q 'cluster_name';
         then
             echo "Elasticsearch started."
             remainingChecks=0
@@ -116,5 +116,4 @@ if (($?==1)); then
 fi;
 
 #Launch the policy server
-sh /opt/tomcat/bin/catalina.sh run
-
+sh $CATALINA_HOME/bin/catalina.sh run |& sed -ue 's/^/Policy Server: /'

@@ -35,24 +35,17 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.krallin</groupId>
-            <artifactId>tini</artifactId>
-            <version>${tini.version}</version>
-            <scope>runtime</scope>
-            <type>exe</type>
-        </dependency>
-
-        <dependency>
             <groupId>com.github.cafdataprocessing</groupId>
             <artifactId>corepolicy-web</artifactId>
             <version>${project.parent.version}</version>
             <type>war</type>
         </dependency>
         <dependency>
-            <groupId>org.apache.tomcat</groupId>
-            <artifactId>tomcat</artifactId>
-            <version>8.0.15</version>
-            <type>zip</type>
+            <groupId>com.github.cafdataprocessing</groupId>
+            <artifactId>policy-elasticsearch-tomcat-image</artifactId>
+            <version>${project.parent.version}</version>
+            <type>pom</type>
+            <scope>provided</scope>
         </dependency>
 
         <!-- dependencies only required when running integration tests or compiling source for them. -->
@@ -160,7 +153,7 @@
     <properties>
         <fileSet.outputDirectory>startup</fileSet.outputDirectory>
 
-        <container.policyelasticsearchbase.name>cafdataprocessing/policy-elasticsearch-container:1.1</container.policyelasticsearchbase.name>
+        <container.policyelasticsearchtomcatbase.name>cafinternal/prereleases:policy-elasticsearch-tomcat-${project.version}</container.policyelasticsearchtomcatbase.name>
         <container.policyserver.name>cafinternal/prereleases:policy-admin-elasticsearch-${project.version}</container.policyserver.name>
         <container.integration.tests.basedir>/opt/integration-tests</container.integration.tests.basedir>
         <container.caf.configs.directory>configs</container.caf.configs.directory>
@@ -337,7 +330,6 @@
                     <skip>false</skip>
                     <verbose>true</verbose>
                     <logDate>default</logDate>
-                    <autoPull>always</autoPull>
 
                     <images>
                         <!-- pull in a normal postgres DB, we will mount a volume containing our scripts as a linked volume -->
@@ -369,7 +361,7 @@
                             <alias>integrationtests-corepolicy-dbinstaller</alias>
                             <name>policy/integrationtests/dbinstaller</name>
                             <build>
-                                <from>java:8</from>
+                                <from>cafapi/opensuse-jre8:1.2</from>
                                 <tags>
                                     <tag>built-as-part-of-${project.parent.artifactId}-latest</tag>
                                     <tag>temporary-item-please-remove</tag>
@@ -418,33 +410,27 @@
                             <alias>policy-server</alias>
                             <name>${container.policyserver.name}</name>
                             <build>
-                                <from>${container.policyelasticsearchbase.name}</from>
+                                <from>${container.policyelasticsearchtomcatbase.name}</from>
                                 <labels>
                                     <Build.Number>${project.version}</Build.Number>
                                     <Build.Date>${maven.build.timestamp}</Build.Date>
                                     <Git.Branch>${git.branch}</Git.Branch>
                                     <Git.Commit>${git.revision}</Git.Commit>
                                 </labels>
-                                <!-- Expose port for tomcat -->
+                                <!-- Expose ports for tomcat -->
                                 <ports>
                                     <port>8080</port>
+                                    <port>8081</port>
+                                    <port>8443</port>
                                 </ports>
                                 <env>
-                                    <CATALINA_HOME>/opt/tomcat</CATALINA_HOME>
+                                    <CATALINA_HOME>/usr/share/tomcat</CATALINA_HOME>
                                     <PATH>$PATH:$CATALINA_HOME/bin</PATH>
                                 </env>
-                                <!-- Run application through tini -->
-                                <entryPoint>
-                                    <exec>
-                                        <args>/opt/tini-${tini.version}.exe</args>
-                                        <args>--</args>
-                                    </exec>
-                                </entryPoint>
                                 <runCmds>
-                                    <runCmd>mv /opt/${fileSet.outputDirectory}/apache-tomcat-* /opt/tomcat</runCmd>
                                     <runCmd>mkdir /var/corepolicy</runCmd>
                                     <runCmd>mkdir ${engine.environmentcache.location}</runCmd>
-                                    <runCmd>mv /opt/${fileSet.outputDirectory}/corepolicy.war /opt/tomcat/webapps/</runCmd>
+                                    <runCmd>mv /opt/${fileSet.outputDirectory}/corepolicy.war /usr/share/tomcat/webapps/</runCmd>
                                 </runCmds>
                                 <cmd>/opt/${fileSet.outputDirectory}/start.sh</cmd>
                                 <assembly>
@@ -453,28 +439,12 @@
                                     <inline>
                                         <dependencySets>
                                             <dependencySet>
-                                                <useProjectArtifact>false</useProjectArtifact>
-                                                <fileMode>0755</fileMode>
-                                                <unpack>true</unpack>
-                                                <includes>
-                                                    <include>org.apache.tomcat:tomcat</include>
-                                                </includes>
-                                                <outputDirectory>${fileSet.outputDirectory}</outputDirectory>
-                                            </dependencySet>
-                                            <dependencySet>
                                                 <useProjectArtifact>true</useProjectArtifact>
                                                 <includes>
                                                     <include>com.github.cafdataprocessing:corepolicy-web</include>
                                                 </includes>
                                                 <outputDirectory>${fileSet.outputDirectory}</outputDirectory>
                                                 <outputFileNameMapping>corepolicy.war</outputFileNameMapping>
-                                            </dependencySet>
-                                            <dependencySet>
-                                                <useProjectArtifact>false</useProjectArtifact>
-                                                <fileMode>0755</fileMode>
-                                                <includes>
-                                                    <include>com.github.krallin:tini</include>
-                                                </includes>
                                             </dependencySet>
                                         </dependencySets>
                                         <files>
