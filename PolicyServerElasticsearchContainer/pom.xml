@@ -428,6 +428,8 @@
                                     <PATH>$PATH:$CATALINA_HOME/bin</PATH>
                                 </env>
                                 <runCmds>
+                                    <runCmd>mkdir /var/corepolicy</runCmd>
+                                    <runCmd>mkdir ${engine.environmentcache.location}</runCmd>
                                     <runCmd>mv /opt/${fileSet.outputDirectory}/corepolicy.war /usr/share/tomcat/webapps/</runCmd>
                                 </runCmds>
                                 <cmd>/opt/${fileSet.outputDirectory}/start.sh</cmd>
