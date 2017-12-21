@@ -417,7 +417,7 @@
                                     <Git.Branch>${git.branch}</Git.Branch>
                                     <Git.Commit>${git.revision}</Git.Commit>
                                 </labels>
-                                <!-- Expose port for tomcat -->
+                                <!-- Expose ports for tomcat -->
                                 <ports>
                                     <port>8080</port>
                                     <port>8081</port>
