@@ -417,6 +417,12 @@
                                     <Git.Branch>${git.branch}</Git.Branch>
                                     <Git.Commit>${git.revision}</Git.Commit>
                                 </labels>
+                                <!-- Expose port for tomcat -->
+                                <ports>
+                                    <port>8080</port>
+                                    <port>8081</port>
+                                    <port>8443</port>
+                                </ports>
                                 <env>
                                     <CATALINA_HOME>/usr/share/tomcat</CATALINA_HOME>
                                     <PATH>$PATH:$CATALINA_HOME/bin</PATH>
