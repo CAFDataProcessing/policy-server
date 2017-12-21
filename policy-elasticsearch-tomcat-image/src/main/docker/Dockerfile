@@ -15,7 +15,7 @@
 #
 
 #
-# Preliminary image that downloads Tomcat and makes some modifications
+# Preliminary image that is the openSUSE Tomcat base image
 #
 FROM cafapi/opensuse-tomcat:2.0 AS builder
 
