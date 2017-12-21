@@ -72,7 +72,7 @@ public class VersionNumberTest {
     {
         ReleaseHistory version = new ReleaseHistory(VersionNumber.getCurrentVersion());
 
-        // Now bump up the major version by 1.
+        // Now lower the major version by 1.
         version.majorVersion-=1;
 
         VersionNumber.isSupportedVersion(version);
@@ -85,7 +85,7 @@ public class VersionNumberTest {
                 Resources.toString(VersionNumber.class.getResource("/supported-database-version"), Charsets.UTF_8);
         ReleaseHistory supportedDatabaseVersion = new ReleaseHistory(supportedDatabaseVersionStr);
 
-        // Now reduce the major version by 1.
+        // Now lower the minor version by 1.
         supportedDatabaseVersion.minorVersion-=1;
 
         VersionNumber.isSupportedVersion(supportedDatabaseVersion);
