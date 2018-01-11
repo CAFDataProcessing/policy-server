@@ -792,4 +792,15 @@
         </insert>
     </changeSet>
 
+    <changeSet author="CAF" id="1515087630000-1">
+        <insert tableName="tbl_policy_type">
+            <column name="item_name" value="Field Mapping Action Type"/>
+            <column name="description" value="Used to rename the metadata fields of a document."/>
+            <column name="definition" value="{	&quot;title&quot;: &quot;Field Mapping Action Type&quot;,	&quot;description&quot;: &quot;Once encountered, renames the fields of this document according to a configurable field name mapping.&quot;,	&quot;type&quot;: &quot;object&quot;,	&quot;properties&quot;: {		&quot;mappings&quot;: {			&quot;description&quot;: &quot;Defines the mapping of metadata field names that will be applied.&quot;,			&quot;type&quot;: &quot;object&quot;		}	}}"/>
+            <column name="internal_name" value="FieldMappingActionType"/>
+            <column name="conflict_resolution_mode" value="PRIORITY"/>
+            <column name="project_id"/>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>

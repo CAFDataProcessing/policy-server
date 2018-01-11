@@ -8,5 +8,7 @@ ${version-number}
 
 - [CAF-3538](https://jira.autonomy.com/browse/CAF-3538): Add Chained Action policy type to database base data.  
   The Chained Action policy type has been added to the base data of the database installer. This is is so that it is available by default in a core policy system for use with the chained workers enhancement. Previously a policy worker would have been responsible for registering types in the database but that worker is not present when using chaining. The new Chained Action type supports the same properties as Composite Document Worker and is intended to replace it for use in chaining of workers going forward.
+- [CAF-3550](https://jira.autonomy.com/browse/CAF-3550): Add Field Mapping Action policy type to database base data.  
+  As with the Chained Action policy type this has been added for use in chained workers so it is available for use in chained worker data processing.
 
 #### Known Issues
