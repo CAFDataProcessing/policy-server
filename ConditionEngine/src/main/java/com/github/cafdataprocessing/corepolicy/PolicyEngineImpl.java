@@ -72,6 +72,7 @@ public class PolicyEngineImpl implements PolicyEngine {
     /**
      * This method adds the policy handler to the collection of handlers registered
      * @param policyHandler handler to add to the collection of registered handlers, handler must not be null.
+     * @throws NullPointerException thrown when policyHandler is null
      */
     @Override
     public void registerPolicyHandler(PolicyHandler policyHandler)
