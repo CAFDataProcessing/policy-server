@@ -156,7 +156,7 @@ public class PolicyEngineImpl implements PolicyEngine {
                 }
             }
             else {
-                logger.debug("No handler registered for policy type id " + policyTypeId);
+                logger.warn("No handler registered for policy type id " + policyTypeId);
             }
         }
     }
