@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -68,8 +69,14 @@ public class PolicyEngineImpl implements PolicyEngine {
         environmentSnapshotCache.invalidate(collectionSequenceId);
     }
 
+    /**
+     * This method adds the policy handler to the collection of handlers registered
+     * @param policyHandler handler to add to the collection of registered handlers, handler must not be null.
+     */
     @Override
-    public void registerPolicyHandler(PolicyHandler policyHandler) {
+    public void registerPolicyHandler(PolicyHandler policyHandler)
+    {
+        Objects.requireNonNull(policyHandler);
         policyHandlers.add(policyHandler);
     }
 
