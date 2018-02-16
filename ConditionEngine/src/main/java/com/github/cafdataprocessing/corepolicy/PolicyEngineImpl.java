@@ -153,7 +153,7 @@ public class PolicyEngineImpl implements PolicyEngine {
         for (Long policyTypeId : distinctPolicyTypeIds) {
             Collection<Policy> policiesOfType = policies.stream().filter(p -> p.typeId.equals(policyTypeId)).collect(Collectors.toList());
 
-            Optional<PolicyHandler> policyHandler = policyHandlers.stream().filter(ph -> ph.getPolicyTypeId() == policyTypeId).findFirst();
+            Optional<PolicyHandler> policyHandler = policyHandlers.stream().filter(ph -> ph != null && ph.getPolicyTypeId() == policyTypeId).findFirst();
             if (policyHandler.isPresent()) {
                 for (Policy policy : policiesOfType) {
                     ProcessingAction processingAction = policyHandler.get().handle(document, policy, collectionSequenceId);
@@ -164,7 +164,7 @@ public class PolicyEngineImpl implements PolicyEngine {
                 }
             }
             else {
-                logger.debug("No handler registered for policy type id " + policyTypeId);
+                logger.warn("No handler registered for policy type id " + policyTypeId);
             }
         }
     }
