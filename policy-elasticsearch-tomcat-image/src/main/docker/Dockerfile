@@ -17,7 +17,7 @@
 #
 # Preliminary image that is the openSUSE Tomcat base image
 #
-FROM cafapi/opensuse-tomcat:2.0 AS builder
+FROM cafapi/opensuse-tomcat:3.0 AS builder
 
 #
 # The actual image definition
