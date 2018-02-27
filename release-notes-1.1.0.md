@@ -10,5 +10,5 @@ ${version-number}
 - [CAF-3550](https://jira.autonomy.com/browse/CAF-3550): Add Field Mapping Action policy type to database base data.  
   As with the Chained Action policy type this has been added for use in chained workers so it is available for use in chained worker data processing.
 - [SCMOD-3287](https://jira.autonomy.com/browse/SCMOD-3287): Policy Admin Elasticsearch has been updated to deploy onto Tomcat9
-
+- [SCMOD-3246](https://jira.autonomy.com/browse/SCMOD-3246): ElasticSearch has been upgraded to 2.4.6
 #### Known Issues

@@ -22,7 +22,7 @@ FROM cafapi/opensuse-tomcat:3.0 AS builder
 #
 # The actual image definition
 #
-FROM cafinternal/prereleases:policy-elasticsearch-container-2.0.0-SNAPSHOT
+FROM cafdataprocessing/policy-elasticsearch-container:2.0
 
 COPY --from=builder /usr/share/tomcat/ /usr/share/tomcat/
 COPY --from=builder /startup/startup.d/ /startup/startup.d/
