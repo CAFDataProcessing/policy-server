@@ -771,6 +771,14 @@
         <addForeignKeyConstraint baseColumnNames="sequence_workflow_id" baseTableName="tbl_sequence_workflow_sequences" constraintName="fk_constraint_tbl_sequence_workflow_sequence_workflow_ids" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="tbl_sequence_workflow"/>
     </changeSet>
 
+    <!--
+        Database release history should be updated when a change is made that breaks compatibility.
+        e.g. Breaking change made. Release history gets 1.0.1.1 added.
+        Client checks DB, gets that version and compares to the version in its supported version file. Major, minor and patch do
+        not match. Unless the version of the project itself also matches then an error will be thrown.
+        This means that a 1.0.0 client can talk to an installed 1.0.5 (etc) release as long as the release history table
+        doesn't return a different version than 1.0.0.1
+    -->
     <changeSet author="CAF" id="1495670380000-44">
         <insert tableName="tbl_release_history">
             <column name="release" value="conditionEngine 1.0"/>
