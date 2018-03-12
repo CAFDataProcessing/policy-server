@@ -11,4 +11,7 @@ ${version-number}
   As with the Chained Action policy type this has been added for use in chained workers so it is available for use in chained worker data processing.
 - [SCMOD-3287](https://jira.autonomy.com/browse/SCMOD-3287): Policy Admin Elasticsearch has been updated to deploy onto Tomcat9
 - [SCMOD-3246](https://jira.autonomy.com/browse/SCMOD-3246): ElasticSearch has been upgraded to 2.4.6
+- [SCMOD-3478](https://jira.autonomy.com/browse/SCMOD-3478): Global and tenant config tables added.  
+  Two new tables are now added by the database installer project. The global config table allows for storing keys and default values alongside a description of the key and the tenant config table allows specifying a tenant specific value for a key from the global table.
+
 #### Known Issues

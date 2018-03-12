@@ -811,4 +811,31 @@
         </insert>
     </changeSet>
 
+    <changeSet author="CAF" id="1520597520212-1">
+        <createTable tableName="tbl_global_config">
+            <column name="key" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="default" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="CLOB"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="CAF" id="1520597520212-2">
+        <createTable tableName="tbl_tenant_config">
+            <column name="tenant_id" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="key" type="VARCHAR(255)">
+                <!-- a tenant key must override an existing global key -->
+                <constraints nullable="false" foreignKeyName="fk_global_key" references="tbl_global_config(key)"/>
+            </column>
+            <column name="value" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="tbl_tenant_config" columnNames="tenant_id, key" constraintName="tenant_specific_key" />
+    </changeSet>
 </databaseChangeLog>
