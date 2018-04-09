@@ -17,12 +17,12 @@
 #
 # Preliminary image that is the openSUSE Tomcat base image
 #
-FROM cafapi/opensuse-tomcat:3.0 AS builder
+FROM cafapi/opensuse-tomcat:3 AS builder
 
 #
 # The actual image definition
 #
-FROM cafdataprocessing/policy-elasticsearch-container:2.0
+FROM cafdataprocessing/policy-elasticsearch-container:2
 
 COPY --from=builder /usr/share/tomcat/ /usr/share/tomcat/
 COPY --from=builder /startup/startup.d/ /startup/startup.d/
