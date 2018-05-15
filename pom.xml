@@ -49,6 +49,7 @@
         <module>MultimapUtils</module>
         <module>DatabaseScriptGeneration</module>
         <module>policy-elasticsearch-tomcat-image</module>
+        <module>policy-server-admin</module>
         <module>PolicyServerElasticsearchContainer</module>
     </modules>
     
