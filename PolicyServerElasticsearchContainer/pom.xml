@@ -42,6 +42,12 @@
         </dependency>
         <dependency>
             <groupId>com.github.cafdataprocessing</groupId>
+            <artifactId>policy-server-admin</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cafdataprocessing</groupId>
             <artifactId>policy-elasticsearch-tomcat-image</artifactId>
             <version>${project.parent.version}</version>
             <type>pom</type>
@@ -434,7 +440,7 @@
                                 </runCmds>
                                 <cmd>/opt/${fileSet.outputDirectory}/start.sh</cmd>
                                 <assembly>
-                                    <basedir>/opt</basedir>
+                                    <basedir>/</basedir>
                                     <mode>tar</mode>
                                     <inline>
                                         <dependencySets>
@@ -443,14 +449,22 @@
                                                 <includes>
                                                     <include>com.github.cafdataprocessing:corepolicy-web</include>
                                                 </includes>
-                                                <outputDirectory>${fileSet.outputDirectory}</outputDirectory>
+                                                <outputDirectory>opt/${fileSet.outputDirectory}</outputDirectory>
                                                 <outputFileNameMapping>corepolicy.war</outputFileNameMapping>
+                                            </dependencySet>
+                                            <dependencySet>
+                                                <useProjectArtifact>false</useProjectArtifact>
+                                                <includes>
+                                                    <include>com.github.cafdataprocessing:policy-server-admin</include>
+                                                </includes>
+                                                <outputDirectory>usr/share/tomcat/adminapps/ROOT</outputDirectory>
+                                                <unpack>true</unpack>
                                             </dependencySet>
                                         </dependencySets>
                                         <files>
                                             <file>
                                                 <source>start.sh</source>
-                                                <outputDirectory>${fileSet.outputDirectory}</outputDirectory>
+                                                <outputDirectory>opt/${fileSet.outputDirectory}</outputDirectory>
                                                 <fileMode>0755</fileMode>
                                                 <lineEnding>unix</lineEnding>
                                             </file>
@@ -465,6 +479,7 @@
                                     <!-- Expose port for tomcat -->
                                     <port>${docker.host.exposed.tomcat.service.port}:8080</port>
                                     <!-- Expose port only for elasticsearch tests, not used in published container -->
+                                    <port>${docker.host.exposed.tomcat.admin.port}:8081</port>
                                     <port>${docker.host.exposed.elasticsearch.javaapi.port}:9300</port>
                                     <!-- Expose port for remote debugging -->
                                     <port>${remote.debug}:5005</port>
@@ -497,7 +512,7 @@
                                     <http>
                                         <!-- note health check uses external port exposed on docker VM, it may be in bridged mode, or running
                                         in its own machine, in which case, this can be the same as the container.run.tomcat.service.port -->
-                                        <url>http://${docker.host.address}:${docker.host.exposed.tomcat.service.port}/corepolicy/healthcheck?project_id=1</url>
+                                        <url>http://${docker.host.address}:${docker.host.exposed.tomcat.admin.port}/healthcheck</url>
                                         <method>GET</method>
                                     </http>
                                     <time>360000</time>
@@ -579,6 +594,7 @@
             <properties>
                 <docker.host.exposed.tomcat.service.port>9100</docker.host.exposed.tomcat.service.port>
                 <docker.host.exposed.elasticsearch.javaapi.port>9300</docker.host.exposed.elasticsearch.javaapi.port>
+                <docker.host.exposed.tomcat.admin.port>9400</docker.host.exposed.tomcat.admin.port>
             </properties>
         </profile>
 
