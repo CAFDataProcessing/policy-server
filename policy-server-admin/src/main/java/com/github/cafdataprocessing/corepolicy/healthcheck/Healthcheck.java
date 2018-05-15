@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Healthcheck extends HttpServlet
+public final class Healthcheck extends HttpServlet
 {
     private final static Logger LOG = LoggerFactory.getLogger(Healthcheck.class);
 
@@ -64,7 +64,7 @@ public class Healthcheck extends HttpServlet
         }
     }
 
-    static boolean checkPostgres(final Map<String, Map<String, String>> statusResponseMap)
+    private static boolean checkPostgres(final Map<String, Map<String, String>> statusResponseMap)
     {
         try {
             final boolean healthy = PostgresDbHealthCheck.checkDBExists();
@@ -72,12 +72,13 @@ public class Healthcheck extends HttpServlet
             return healthy;
         } catch (final Exception ex) {
             LOG.error("Postgres database health check reporting unhealthy", ex.toString());
-            updateStatusResponseWithHealthOfComponent(statusResponseMap, false, ex.toString(), "database");
+            updateStatusResponseWithHealthOfComponent
+                    (statusResponseMap, false, ex.toString(), "database");
             return false;
         }
     }
 
-    static boolean updateStatusResponseWithHealthOfComponent(
+    private static boolean updateStatusResponseWithHealthOfComponent(
         final Map<String, Map<String, String>> statusResponseMap, final boolean isHealthy, final String message,
         final String component)
     {
