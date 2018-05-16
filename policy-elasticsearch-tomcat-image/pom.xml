@@ -70,7 +70,7 @@
                                     <!-- Labels used for image tagging -->
                                     <BUILD_NUMBER>${project.version}</BUILD_NUMBER>
                                     <BUILD_DATE>${maven.build.timestamp}</BUILD_DATE>
-                                    <GIT_REPO>${project.scm.url}</GIT_REPO>
+                                    <GIT_REPO>${gitRepo}</GIT_REPO>
                                     <GIT_BRANCH>${git.branch}</GIT_BRANCH>
                                     <GIT_COMMIT>${git.revision}</GIT_COMMIT>
 

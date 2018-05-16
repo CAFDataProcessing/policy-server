@@ -105,6 +105,7 @@
 
     <properties>
         <spring.version>4.0.5.RELEASE</spring.version>
+        <gitRepo>https://github.com/CAFDataProcessing/policy-server</gitRepo>
     </properties>
 
     <dependencyManagement>
@@ -372,6 +373,6 @@
     <scm>
         <connection>scm:git:https://github.com/CAFDataProcessing/policy-server.git</connection>
         <developerConnection>scm:git:https://github.com/CAFDataProcessing/policy-server.git</developerConnection>
-        <url>https://github.com/CAFDataProcessing/policy-server.git</url>
+        <url>${gitRepo}</url>
     </scm>
 </project>
