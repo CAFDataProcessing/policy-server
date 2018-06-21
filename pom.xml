@@ -99,6 +99,9 @@
     </developers>
 
     <properties>
+        <dockerHubOrganization>cafdataprocessing</dockerHubOrganization>
+        <dockerDataProcessingOrg>${dockerImagePrefix}${dockerHubOrganization}${dockerOrgSeperator}</dockerDataProcessingOrg>
+        <dockerProjectVersion>${dockerVersionSeperator}${project.version}</dockerProjectVersion>
         <copyrightYear>2017</copyrightYear>
         <copyrightNotice>Copyright ${project.inceptionYear}-${copyrightYear} ${project.organization.name}.</copyrightNotice>
         <spring.version>4.0.5.RELEASE</spring.version>
