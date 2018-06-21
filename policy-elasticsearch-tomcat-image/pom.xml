@@ -34,7 +34,7 @@
     <packaging>pom</packaging>
     
     <properties>
-        <policy.elasticsearch.tomcat.image.name>cafinternal/prereleases:policy-elasticsearch-tomcat-${project.version}</policy.elasticsearch.tomcat.image.name>
+        <policy.elasticsearch.tomcat.image.name>${dockerDataProcessingOrg}policy-elasticsearch-tomcat${dockerProjectVersion}</policy.elasticsearch.tomcat.image.name>
     </properties>
     
     <build>
