@@ -22,7 +22,7 @@
     <parent>
         <groupId>com.github.cafdataprocessing</groupId>
         <artifactId>corepolicy-aggregator</artifactId>
-        <version>1.1.0-SNAPSHOT</version>
+        <version>1.1.0-94</version>
     </parent>
     <artifactId>policy-server-admin</artifactId>
     <packaging>war</packaging>
