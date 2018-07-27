@@ -838,4 +838,20 @@
         </createTable>
         <addPrimaryKey tableName="tbl_tenant_config" columnNames="tenant_id, key" constraintName="tenant_specific_key" />
     </changeSet>
+    
+    <changeSet author="CAF" id="1520597698754-1">
+        <createTable tableName="tbl_repository_config">
+            <column name="repository_id" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="key" type="VARCHAR(255)">
+                <!-- a repository key must override an existing tenant key -->
+                <constraints nullable="false" foreignKeyName="fk_tenant_key" references="tbl_tenant_config(key)"/>
+            </column>
+            <column name="value" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="tbl_repository_config" columnNames="repository_id, key" constraintName="repository_specific_key" />
+    </changeSet>
 </databaseChangeLog>
