@@ -841,7 +841,7 @@
     
     <changeSet author="CAF" id="adding_repository_table-1">
         <addColumn tableName="tbl_global_config">
-            <column name="scope" type="smallint">
+            <column name="scope" type="smallint" defaultValue="0">
                 <constraints nullable="false"/>
             </column>
         </addColumn>
