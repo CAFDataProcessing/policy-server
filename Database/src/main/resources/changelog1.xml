@@ -839,7 +839,15 @@
         <addPrimaryKey tableName="tbl_tenant_config" columnNames="tenant_id, key" constraintName="tenant_specific_key" />
     </changeSet>
     
-    <changeSet author="CAF" id="adding_repository_table">
+    <changeSet author="CAF" id="adding_repository_table-1">
+        <addColumn tableName="tbl_global_config">
+            <column name="scope" type="smallint">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="CAF" id="adding_repository_table-2">
         <createTable tableName="tbl_repository_config">
             <column name="tenant_id" type="VARCHAR(40)">
                 <constraints nullable="false"/>
