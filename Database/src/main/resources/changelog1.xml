@@ -855,6 +855,5 @@
             </column>
         </createTable>
         <addPrimaryKey tableName="tbl_repository_config" columnNames="tenant_id, repository_id, key" constraintName="repository_specific_key" />
-        <addForeignKeyConstraint baseTableName="tbl_repository_config" baseColumnNames="tenant_id, key" constraintName="fk_tenant_key" referencedTableName="tbl_tenant_config" referencedColumnNames="tenant_id, key" />
     </changeSet>
 </databaseChangeLog>
