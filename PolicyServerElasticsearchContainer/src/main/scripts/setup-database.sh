@@ -22,7 +22,7 @@
 cd /database
 java    -Dapi.mode=direct \
         -Dapi.direct.repository=hibernate \
-        -Dhibernate.connectionstring=${internal.hibernate.connectionstring} \
+        -Dhibernate.connectionstring=${hibernate.connectionstring} \
         -Dhibernate.user=${hibernate.user} \
         -Dhibernate.password=${hibernate.password} \
         -Dhibernate.databasename=${hibernate.databasename} \
