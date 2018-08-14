@@ -261,7 +261,7 @@
                         <POLICY_ELASTICSEARCH_DISABLED>false</POLICY_ELASTICSEARCH_DISABLED>
                         <POLICY_ELASTICSEARCH_HOST>${docker.host.address}</POLICY_ELASTICSEARCH_HOST>
                         <POLICY_ELASTICSEARCH_PORT>${docker.host.exposed.elasticsearch.javaapi.port}</POLICY_ELASTICSEARCH_PORT>
-                        <hibernate.connectionstring>${internal.hibernate.connectionstring}</hibernate.connectionstring>
+                        <hibernate.connectionstring>jdbc:postgresql://integrationtests-corepolicydb-postgres:5432/&lt;dbname&gt;</hibernate.connectionstring>
                         <hibernate.user>${hibernate.user}</hibernate.user>
                         <hibernate.password>${hibernate.password}</hibernate.password>
                         <hibernate.databasename>${hibernate.databasename}</hibernate.databasename>
