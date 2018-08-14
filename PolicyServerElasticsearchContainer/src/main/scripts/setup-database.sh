@@ -14,16 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 CONNECTION_URL=`env | grep hibernate.connectionstring | awk -F'=' '{print $2}'`
 DB_USERNAME=` env | grep hibernate.user | awk -F'=' '{print $2}'`
 DB_NAME=` env | grep hibernate.databasename | awk -F'=' '{print $2}'`
 DB_PASSWORD=` env | grep hibernate.password | awk -F'=' '{print $2}'`
 
-cd /database
 java    -Dapi.mode=direct \
         -Dapi.direct.repository=hibernate \
         -Dhibernate.connectionstring=$CONNECTION_URL \
         -Dhibernate.user=$DB_USERNAME \
         -Dhibernate.password=$DB_PASSWORD \
         -Dhibernate.databasename=$DB_NAME \
-        -jar /corepolicy-database.jar -c
+        -jar /database/corepolicy-database.jar -c
