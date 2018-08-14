@@ -172,7 +172,7 @@
             Of course you can make
         both this config, and the config used from inside the container point to your own DB, but this is the default setup, which create a new linked container from scratch for
         each test run -->
-        <hibernate.connectionstring>jdbc:postgresql://${docker.host.address}:${postgres.db.port}/&lt;dbname&gt;</hibernate.connectionstring>
+        <internal.hibernate.connectionstring>jdbc:postgresql://${docker.host.address}:${postgres.db.port}/&lt;dbname&gt;</internal.hibernate.connectionstring>
 
         <!-- The reason behind having 2 here connection strings, is that we also connect to the DB from inside the worker containers.  It doesn't use
         dnslookup, as its on a private network, it instead uses a fixed name called callingSystem, which you can map to anything you want. It is then added
