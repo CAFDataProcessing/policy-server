@@ -85,8 +85,6 @@
             <groupId>com.github.cafdataprocessing</groupId>
             <artifactId>corepolicy-database</artifactId>
             <version>${project.parent.version}</version>
-            <classifier>jar-with-dependencies</classifier>
-            <scope>runtime</scope>
             <type>jar</type>
         </dependency>
 
