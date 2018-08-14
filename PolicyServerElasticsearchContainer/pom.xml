@@ -177,7 +177,7 @@
         <!-- The reason behind having 2 here connection strings, is that we also connect to the DB from inside the worker containers.  It doesn't use
         dnslookup, as its on a private network, it instead uses a fixed name called callingSystem, which you can map to anything you want. It is then added
         to the containers host file. -->
-        <internal.hibernate.connectionstring>jdbc:postgresql://integrationtests-corepolicydb-postgres:5432/&lt;dbname&gt;</internal.hibernate.connectionstring>
+        <internal.hibernate.connectionstring></internal.hibernate.connectionstring>
 
         <hibernate.user>postgres</hibernate.user>
         <hibernate.password>root</hibernate.password>
@@ -261,7 +261,7 @@
                         <POLICY_ELASTICSEARCH_DISABLED>false</POLICY_ELASTICSEARCH_DISABLED>
                         <POLICY_ELASTICSEARCH_HOST>${docker.host.address}</POLICY_ELASTICSEARCH_HOST>
                         <POLICY_ELASTICSEARCH_PORT>${docker.host.exposed.elasticsearch.javaapi.port}</POLICY_ELASTICSEARCH_PORT>
-                        <hibernate.connectionstring>${hibernate.connectionstring}</hibernate.connectionstring>
+                        <hibernate.connectionstring>${internal.hibernate.connectionstring}</hibernate.connectionstring>
                         <hibernate.user>${hibernate.user}</hibernate.user>
                         <hibernate.password>${hibernate.password}</hibernate.password>
                         <hibernate.databasename>${hibernate.databasename}</hibernate.databasename>
