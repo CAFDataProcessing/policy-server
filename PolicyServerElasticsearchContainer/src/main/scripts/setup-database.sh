@@ -15,10 +15,10 @@
 # limitations under the License.
 #
 
-CONNECTION_URL=`env | grep hibernate.connectionstring | awk -F'=' '{print $2}'`
-DB_USERNAME=` env | grep hibernate.user | awk -F'=' '{print $2}'`
-DB_NAME=` env | grep hibernate.databasename | awk -F'=' '{print $2}'`
-DB_PASSWORD=` env | grep hibernate.password | awk -F'=' '{print $2}'`
+CONNECTION_URL=$(env | grep hibernate.connectionstring | awk -F'=' '{print $2}')
+DB_USERNAME=$(env | grep hibernate.user | awk -F'=' '{print $2}')
+DB_NAME=$(env | grep hibernate.databasename | awk -F'=' '{print $2}')
+DB_PASSWORD=$(env | grep hibernate.password | awk -F'=' '{print $2}')
 
 java    -Dapi.mode=direct \
         -Dapi.direct.repository=hibernate \
