@@ -85,6 +85,9 @@
             <groupId>com.github.cafdataprocessing</groupId>
             <artifactId>corepolicy-database</artifactId>
             <version>${project.parent.version}</version>
+            <classifier>jar-with-dependencies</classifier>
+            <scope>runtime</scope>
+            <type>jar</type>
         </dependency>
 
         <dependency>
@@ -261,10 +264,10 @@
                         <POLICY_ELASTICSEARCH_DISABLED>false</POLICY_ELASTICSEARCH_DISABLED>
                         <POLICY_ELASTICSEARCH_HOST>${docker.host.address}</POLICY_ELASTICSEARCH_HOST>
                         <POLICY_ELASTICSEARCH_PORT>${docker.host.exposed.elasticsearch.javaapi.port}</POLICY_ELASTICSEARCH_PORT>
-                        <hibernate.connectionstring>jdbc:postgresql://integrationtests-corepolicydb-postgres:5432/&lt;dbname&gt;</hibernate.connectionstring>
-                        <hibernate.user>${hibernate.user}</hibernate.user>
-                        <hibernate.password>${hibernate.password}</hibernate.password>
-                        <hibernate.databasename>${hibernate.databasename}</hibernate.databasename>
+                        <hibernate_connectionstring>jdbc:postgresql://integrationtests-corepolicydb-postgres:5432/&lt;dbname&gt;</hibernate_connectionstring>
+                        <hibernate_user>${hibernate.user}</hibernate_user>
+                        <hibernate_password>${hibernate.password}</hibernate_password>
+                        <hibernate_databasename>${hibernate.databasename}</hibernate_databasename>
                     </systemPropertyVariables>
                     <!--<debugForkedProcess>true</debugForkedProcess>-->
                     <reportsDirectory>${project.build.directory}/failsafe-reports</reportsDirectory>
