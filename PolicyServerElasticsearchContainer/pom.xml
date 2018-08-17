@@ -85,7 +85,6 @@
             <groupId>com.github.cafdataprocessing</groupId>
             <artifactId>corepolicy-database</artifactId>
             <version>${project.parent.version}</version>
-            <type>jar</type>
         </dependency>
 
         <dependency>
@@ -399,7 +398,7 @@
                                             <fileSet>
                                                 <fileMode>0755</fileMode>
                                                 <lineEnding>unix</lineEnding>
-                                                <directory>src/main/scripts/</directory>
+                                                <directory>src/main/scripts/startup.d/</directory>
                                                 <outputDirectory>startup/startup.d/</outputDirectory>
                                             </fileSet>
                                         </fileSets>
