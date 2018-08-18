@@ -362,56 +362,6 @@
                             </run>
                         </image>
 
-                        <!-- Ensure Db installer is started before the main corepolicy container for tests - so placed at top -->
-                        <image>
-                            <alias>integrationtests-corepolicy-dbinstaller</alias>
-                            <name>policy/integrationtests/dbinstaller</name>
-                            <build>
-                                <from>cafapi/opensuse-jre8:1.2</from>
-                                <tags>
-                                    <tag>built-as-part-of-${project.parent.artifactId}-latest</tag>
-                                    <tag>temporary-item-please-remove</tag>
-                                </tags>
-                                <assembly>
-                                    <basedir>/</basedir>
-                                    <inline>
-                                        <dependencySets>
-                                            <dependencySet>
-                                                <fileMode>0755</fileMode>
-                                                <useProjectArtifact>true</useProjectArtifact>
-                                                <includes>
-                                                    <include>com.github.cafdataprocessing:corepolicy-database</include>
-                                                </includes>
-                                                <outputFileNameMapping>corepolicy-database.jar</outputFileNameMapping>
-                                            </dependencySet>
-                                        </dependencySets>
-                                    </inline>
-                                </assembly>
-                            </build>
-                            <run>
-                                <links>
-                                    <link>integrationtests-corepolicydb-postgres</link>
-                                </links>
-                                <log>
-                                    <enabled>true</enabled>
-                                </log>
-                                <cmd>java
-                                    -Dapi.mode=direct
-                                    -Dapi.direct.repository=hibernate
-                                    -Dhibernate.connectionstring=${internal.hibernate.connectionstring}
-                                    -Dhibernate.user=${hibernate.user}
-                                    -Dhibernate.password=${hibernate.password}
-                                    -Dhibernate.databasename=${hibernate.databasename}
-                                    -jar /corepolicy-database.jar -c
-                                </cmd>
-                                <wait>
-                                    <log>DB update finished.</log>
-                                    <time>60000</time>
-                                    <shutdown>500</shutdown>
-                                </wait>
-                            </run>
-                        </image>
-
                         <image>
                             <alias>policy-server</alias>
                             <name>${container.policyserver.name}</name>
@@ -444,6 +394,14 @@
                                     <basedir>/</basedir>
                                     <mode>tar</mode>
                                     <inline>
+                                        <fileSets>
+                                            <fileSet>
+                                                <fileMode>0755</fileMode>
+                                                <lineEnding>unix</lineEnding>
+                                                <directory>src/main/startup.d/</directory>
+                                                <outputDirectory>startup/startup.d/</outputDirectory>
+                                            </fileSet>
+                                        </fileSets>
                                         <dependencySets>
                                             <dependencySet>
                                                 <useProjectArtifact>true</useProjectArtifact>
@@ -460,6 +418,14 @@
                                                 </includes>
                                                 <outputDirectory>usr/share/tomcat/adminapps/ROOT</outputDirectory>
                                                 <unpack>true</unpack>
+                                            </dependencySet>
+                                            <dependencySet>
+                                                <useProjectArtifact>true</useProjectArtifact>
+                                                <includes>
+                                                    <include>com.github.cafdataprocessing:corepolicy-database</include>
+                                                </includes>
+                                                <outputDirectory>database</outputDirectory>
+                                                <outputFileNameMapping>corepolicy-database.jar</outputFileNameMapping>
                                             </dependencySet>
                                         </dependencySets>
                                         <files>
